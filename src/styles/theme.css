@@ -1,0 +1,79 @@
+/*
+ * Design tokens — the single source of truth for colours, fonts and font sizes.
+ * Change values here; Tailwind utilities (text-primary, text-display, …) read
+ * from these variables via the @theme mapping in index.css.
+ */
+:root {
+  /* Brand colours */
+  --color-primary: #00e5ff;        /* CTA button, footer accents */
+  --color-primary-dark: #0097a7;   /* tagline, active nav, eyebrow labels */
+  --color-primary-soft: #e6fbfd;   /* tinted backgrounds */
+
+  /* Neutrals */
+  --color-ink: #111827;            /* headings */
+  --color-body: #4b5563;           /* paragraph text */
+  --color-muted: #6b7280;          /* labels, captions */
+  --color-line: #e5e7eb;           /* borders, dividers */
+  --color-surface: #ffffff;
+  --color-surface-alt: #f3f4f6;    /* badges */
+  --color-footer: #0a0a0a;
+  --color-footer-text: #d1d5db;
+  --color-footer-muted: #6b7280;
+
+  /* Layout — Figma frame is 1440px: 1280px content + 80px gutters */
+  --container-max: 1280px;
+  --container-gutter: 1rem;          /* mobile: 16px */
+  --container-gutter-md: 2rem;       /* tablet: 32px */
+  --container-gutter-lg: 5rem;       /* desktop: 80px */
+
+  /* Font families */
+  --font-display: 'Unbounded', system-ui, sans-serif;
+  --font-body: 'Geist', system-ui, sans-serif;
+  --font-code: 'Geist Mono', ui-monospace, monospace;
+
+  /* Font sizes */
+  --fs-hero: 2.25rem;                          /* TEAM ROBO@EEE — 36px on mobile, see breakpoints below */
+  --fs-h2: 1.75rem;                            /* section titles — 28px on mobile */
+  --fs-h3: 1.375rem;                           /* benchmark titles — 22px */
+  --fs-h4: 1.125rem;                           /* card titles — 18px */
+  --fs-tagline: 1.25rem;                       /* ACE tagline — 20px */
+  --fs-lead: 1.0625rem;                        /* hero paragraph — 17px */
+  --fs-base: 0.9375rem;                        /* body — 15px */
+  --fs-sm: 0.875rem;                           /* nav, small body — 14px */
+  --fs-xs: 0.8125rem;                          /* buttons, captions — 13px */
+  --fs-eyebrow: 0.75rem;                     /* mono labels — 12px */
+}
+
+/*
+ * Responsive font sizes — same breakpoints as Tailwind (sm 640, md 768, lg 1024, xl 1280).
+ * "ROBO@EEE" is 7.09em wide in Unbounded 700, so the hero size is capped so the
+ * word always fits its column (e.g. 72px → 510px wide).
+ * Column widths account for a ~17px desktop scrollbar: media queries include it,
+ * but the page content doesn't get that space.
+ */
+@media (min-width: 640px) {
+  :root {
+    --fs-hero: 4rem;       /* 64px — stacked layout, column ≥ 608px */
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --fs-hero: 4.5rem;     /* 72px — hero still stacked, text column ≥ 687px */
+    --fs-h2: 2.25rem;      /* 36px */
+    --fs-h3: 1.125rem;     /* 18px — benchmarks go 3 columns, keep "ICRA BARN 2024" on one line */
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --fs-hero: 4rem;       /* 64px — image 420px, text column ≥ 492px */
+    --fs-h3: 1.375rem;     /* 22px */
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --fs-hero: 4.5rem;     /* 72px — Figma size; image 480px until 1440, text column ≥ 559px */
+  }
+}

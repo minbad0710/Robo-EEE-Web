@@ -1,0 +1,49 @@
+@import 'tailwindcss';
+@import './styles/theme.css';
+@import './styles/components.css' layer(components);
+
+/* Expose the CSS tokens from theme.css as Tailwind utilities. Values live in theme.css only. */
+@theme inline {
+  --color-primary: var(--color-primary);
+  --color-primary-dark: var(--color-primary-dark);
+  --color-primary-soft: var(--color-primary-soft);
+  --color-ink: var(--color-ink);
+  --color-body: var(--color-body);
+  --color-muted: var(--color-muted);
+  --color-line: var(--color-line);
+  --color-surface: var(--color-surface);
+  --color-surface-alt: var(--color-surface-alt);
+  --color-footer: var(--color-footer);
+  --color-footer-text: var(--color-footer-text);
+  --color-footer-muted: var(--color-footer-muted);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-code: var(--font-code);
+
+  --text-hero: var(--fs-hero);
+  --text-h2: var(--fs-h2);
+  --text-h3: var(--fs-h3);
+  --text-h4: var(--fs-h4);
+  --text-tagline: var(--fs-tagline);
+  --text-lead: var(--fs-lead);
+  --text-base: var(--fs-base);
+  --text-sm: var(--fs-sm);
+  --text-xs: var(--fs-xs);
+  --text-eyebrow: var(--fs-eyebrow);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-surface);
+    color: var(--color-body);
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    -webkit-font-smoothing: antialiased;
+  }
+}

@@ -1,4 +1,4 @@
-import { benchmarks } from '../data/site'
+import { benchmarks } from '../../data/site'
 
 export default function Benchmarks() {
   return (

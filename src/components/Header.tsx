@@ -25,7 +25,8 @@ export default function Header({ currentPath = '/' }: HeaderProps) {
           <span className="display-heading text-[16px]">TEAM ROBO</span>
         </a>
 
-        <nav aria-label="Main" className="hidden items-center gap-[32px] md:flex">
+        {/* 8 links only fit from lg; below that the hamburger menu is used */}
+        <nav aria-label="Main" className="hidden items-center gap-[24px] lg:flex xl:gap-[32px]">
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -45,7 +46,7 @@ export default function Header({ currentPath = '/' }: HeaderProps) {
 
           <button
             type="button"
-            className="menu-toggle md:hidden"
+            className="menu-toggle lg:hidden"
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
@@ -59,7 +60,7 @@ export default function Header({ currentPath = '/' }: HeaderProps) {
       </div>
 
       {menuOpen && (
-        <nav id="mobile-menu" aria-label="Main mobile" className="mobile-menu md:hidden">
+        <nav id="mobile-menu" aria-label="Main mobile" className="mobile-menu lg:hidden">
           <ul className="page-container flex flex-col py-[8px]">
             {navLinks.map((link) => (
               <li key={link.href}>

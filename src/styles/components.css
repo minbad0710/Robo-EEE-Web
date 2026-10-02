@@ -180,6 +180,39 @@
   border-color: var(--color-ink);
 }
 
+/* Teal variants (Sponsors CTA) */
+.btn--teal {
+  background: var(--color-primary-dark);
+  color: white;
+  box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--color-primary-dark) 70%, transparent);
+}
+
+.btn--teal:hover {
+  background: color-mix(in srgb, var(--color-primary-dark) 85%, var(--color-ink));
+}
+
+.btn--outline-teal {
+  background: var(--color-surface);
+  color: var(--color-primary-dark);
+  border: 1px solid var(--color-primary-dark);
+}
+
+.btn--outline-teal:hover {
+  background: var(--color-primary-soft);
+}
+
+/* Soft teal (News "Load Archived Posts") */
+.btn--soft-teal {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 45%, transparent);
+  cursor: pointer;
+}
+
+.btn--soft-teal:hover {
+  border-color: var(--color-primary-dark);
+}
+
 /* Hero image frame */
 .hero-media {
   border-radius: 6px;
@@ -261,4 +294,287 @@
   border-radius: 9999px;
   background: var(--color-primary);
   box-shadow: 0 0 6px var(--color-primary);
+}
+
+/* About — tinted side card ("Strategic Transition") */
+.info-card {
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgb(17 24 39 / 0.05);
+}
+
+/* About — pillar columns: horizontal dividers on mobile, vertical dividers from md */
+.pillar {
+  padding-block: 1.5rem;
+}
+
+.pillar + .pillar {
+  border-top: 1px solid var(--color-line);
+}
+
+@media (min-width: 768px) {
+  .pillar {
+    padding: 1.75rem 1.5rem;
+  }
+
+  .pillar + .pillar {
+    border-top: 0;
+    border-left: 1px solid var(--color-line);
+  }
+}
+
+@media (min-width: 1024px) {
+  .pillar {
+    padding: 2rem 1.75rem;
+  }
+}
+
+/* Competitions — photo tiles; the tile sets the size, the photo fills it without stretching */
+.media-tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--color-surface-alt);
+}
+
+.media-tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Technology — robot deployment rows (full-bleed photo + tinted text panel) */
+.deployment-photo {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--color-surface);
+  border-color: var(--color-line);
+}
+
+.deployment-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.deployment-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  background: var(--color-surface-soft);
+  padding: 2.5rem var(--container-gutter);
+}
+
+@media (min-width: 768px) {
+  .deployment-panel {
+    padding: 3rem var(--container-gutter-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .deployment-photo {
+    aspect-ratio: auto;
+    min-height: 400px;
+  }
+
+  .deployment-panel {
+    min-height: 400px;
+    padding: 3rem 3rem 2.75rem;
+  }
+
+  /* Panel on the left edge: line its text up with the page content above */
+  .deployment-panel--left {
+    padding-left: var(--container-gutter-md);
+  }
+}
+
+@media (min-width: 1280px) {
+  .deployment-photo,
+  .deployment-panel {
+    min-height: 456px;
+  }
+
+  .deployment-panel {
+    padding-left: 3.5rem;
+  }
+
+  /* Matches .page-container's left edge, also on screens wider than 1440px */
+  .deployment-panel--left {
+    padding-left: max(var(--container-gutter-lg), calc((100vw - var(--container-max)) / 2));
+  }
+}
+
+/* Technology — "ACE PIPELINE" badge beside the Two-Track heading */
+.ace-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  min-width: 13rem;
+  min-height: 5rem;
+  padding: 0 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+  border-radius: 4px;
+  background: var(--color-primary-soft);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+}
+
+/* Technology — tech stack chips */
+.tech-chip {
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--color-line);
+  border-radius: 2px;
+  background: var(--color-surface-alt);
+  font-family: var(--font-code);
+  font-size: 0.6875rem;
+  color: var(--color-body);
+}
+
+/* Technology — gallery photos */
+.gallery-tile {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: 6px;
+  background: var(--color-surface-alt);
+}
+
+.gallery-tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gallery-tile:hover img {
+  transform: scale(1.03);
+}
+
+/* Team — advisor and member cards */
+.team-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgb(17 24 39 / 0.05);
+}
+
+.team-card--hover {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.team-card--hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -12px rgb(17 24 39 / 0.2);
+}
+
+/* Sponsors — wordmark tile in each core partner card */
+.partner-mark {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+  background: var(--color-surface-soft);
+  font-family: var(--font-display);
+  font-size: var(--fs-base);
+  font-weight: 800;
+  color: var(--color-primary-dark);
+}
+
+/* Sponsors — logo wall tile (text placeholder until logos are added) */
+.sponsor-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 84px;
+  padding: 0 1rem;
+  border: 1px solid var(--color-line);
+  border-radius: 2px;
+  background: var(--color-surface);
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  color: #9ca3af;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.sponsor-tile:hover {
+  border-color: var(--color-muted);
+  color: var(--color-muted);
+}
+
+/* Join Us — recruitment status banner (teal when open, grey when closed) */
+.recruitment-banner {
+  --banner-accent: var(--color-primary-dark);
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  background: var(--color-surface-soft);
+}
+
+.recruitment-banner--closed {
+  --banner-accent: var(--color-muted);
+}
+
+.recruitment-banner__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--banner-accent);
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--banner-accent) 12%, white);
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--banner-accent);
+}
+
+/* Join Us — "01" step number badge */
+.step-badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--color-primary-dark);
+  border-radius: 2px;
+  background: var(--color-primary-soft);
+  font-family: var(--font-code);
+  font-size: 0.6875rem;
+  color: var(--color-primary-dark);
+}
+
+/* News — "Read More →" link on each card */
+.read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-code);
+  font-size: 0.6875rem;
+  color: var(--color-primary-dark);
+}
+
+.read-more span {
+  transition: transform 0.15s ease;
+}
+
+.read-more:hover span {
+  transform: translateX(3px);
 }

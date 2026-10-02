@@ -1,5 +1,5 @@
 import logo from '../assets/logo.jpg'
-import { contactLinks, navLinks } from '../data/site'
+import { contactLinks, footerLinks } from '../data/site'
 import SocialIcon from './SocialIcon'
 
 export default function Footer() {
@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="flex flex-col items-center gap-[32px] lg:flex-row lg:justify-between">
           <nav aria-label="Footer pages">
             <ul className="flex flex-wrap justify-center gap-x-[40px] gap-y-[16px] text-sm font-[500] lg:justify-start">
-              {navLinks.map((link) => (
+              {footerLinks.map((link) => (
                 <li key={link.href}>
                   <a href={link.href} className="transition-colors hover:text-primary">
                     {link.label}

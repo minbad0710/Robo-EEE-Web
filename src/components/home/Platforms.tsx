@@ -1,4 +1,4 @@
-import { platforms } from '../data/site'
+import { platforms } from '../../data/site'
 
 export default function Platforms() {
   return (

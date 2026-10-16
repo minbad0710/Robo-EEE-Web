@@ -1,6 +1,6 @@
 export default function Origin() {
   return (
-    <section className="border-b border-line">
+    <section>
       <div className="page-container grid items-start gap-[40px] py-[64px] md:py-[96px] lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-[64px] xl:gap-[80px]">
         <div data-aos="fade-up">
           <h2 className="font-display text-sm font-bold uppercase text-primary-dark">Founded in 2024</h2>
@@ -17,7 +17,7 @@ export default function Origin() {
               <strong className="font-[500] text-ink">
                 NTU School of Electrical and Electronic Engineering (EEE) Undergraduate Office
               </strong>{' '}
-              officially brought the initiative under their direct backing in late 2025.
+              officially brought the initiative under their direct backing in late 2026.
             </p>
           </div>
         </div>

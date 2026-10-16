@@ -14,7 +14,7 @@ export default function ApplyCta() {
       <div className="mt-[24px]" data-aos="fade-up" data-aos-delay="200">
         <a
           href={applyUrl}
-          className="btn btn--teal px-[28px]"
+          className="btn btn--primary px-[28px]"
           {...(external && { target: '_blank', rel: 'noreferrer' })}
         >
           Apply to Team Robo Now

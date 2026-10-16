@@ -1,9 +1,24 @@
-export type NavLink = { label: string; href: string }
+// `children` = dropdown under the link in the header
+export type NavLink = { label: string; href: string; children?: NavLink[] }
+
+// One page per competition, listed in the header's "Competitions" dropdown (newest first).
+// `comingSoon` shows a placeholder page until the page is written.
+export type CompetitionEvent = { name: string; href: string; comingSoon?: boolean }
+
+export const competitionEvents: CompetitionEvent[] = [
+  { name: 'ICRA BARN 2026', href: '/competitions/icra-barn-2026', comingSoon: true },
+  { name: 'ICRA BARN 2027', href: '/competitions/icra-barn-2027', comingSoon: true },
+  { name: 'RoboCup@Home 2027', href: '/competitions/robocup-home-2027', comingSoon: true },
+]
 
 export const navLinks: NavLink[] = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
-  { label: 'Competitions', href: '/competitions' },
+  {
+    label: 'Competitions',
+    href: '/competitions',
+    children: competitionEvents.map((event) => ({ label: event.name, href: event.href })),
+  },
   { label: 'Technology', href: '/technology' },
   { label: 'Team', href: '/team' },
   { label: 'Sponsors', href: '/sponsors' },
@@ -14,15 +29,19 @@ export const navLinks: NavLink[] = [
 // The footer keeps the original four page links
 export const footerLinks: NavLink[] = navLinks.slice(0, 4)
 
-export type SocialIcon = 'email' | 'instagram' | 'linkedin'
+export type SocialIcon = 'email' | 'instagram' | 'linkedin' | 'github'
 
 export type ContactLink = NavLink & { icon: SocialIcon }
 
+// Team-wide profiles — also the fallback for members who have no GitHub/LinkedIn of their own yet
+export const teamGithubUrl = 'https://github.com/Team-Robo'
+export const teamLinkedinUrl = 'https://www.linkedin.com/company/robo-at-eee/posts/?feedView=all'
+
 // `label` is used as the icon's accessible name and hover tooltip
 export const contactLinks: ContactLink[] = [
-  { icon: 'email', label: 'Email: eee-teamrobo@ntu.edu.sg', href: 'mailto:eee-teamrobo@ntu.edu.sg' },
+  { icon: 'email', label: 'Email: teamrobontu@gmail.com', href: 'mailto:teamrobontu@gmail.com' },
   { icon: 'instagram', label: 'Instagram: @robo_at_eee', href: 'https://www.instagram.com/robo_at_eee/' },
-  { icon: 'linkedin', label: 'LinkedIn: Robo@EEE', href: 'https://www.linkedin.com/company/robo-at-eee/posts/?feedView=all' },
+  { icon: 'linkedin', label: 'LinkedIn: Robo@EEE', href: teamLinkedinUrl },
 ]
 
 export type Benchmark = { medal: string; result: string; event: string; team: string }
@@ -46,7 +65,7 @@ export const platforms: Platform[] = [
     specs: ['Jetson AGX Orin · High-torque 4WD', 'Velodyne VLP-16 · RealSense D435'],
   },
   {
-    track: 'RoboCup@Home Baseline',
+    track: 'RoboCup',
     name: 'Galaxea R1',
     description:
       'Acquired via collaboration with Prof. Ziwei Wang. Provides a reliable baseline platform with advanced perception and assistive manipulators.',
@@ -54,35 +73,12 @@ export const platforms: Platform[] = [
     specs: ['Galaxea Custom SDK · Holonomic Base', 'Stereo Depth · 6-DoF Assistive Arm'],
   },
   {
-    track: 'RoboCup@Home Custom',
+    track: 'RoboCup',
     name: 'In-House Built Robot',
     description:
       'Meticulously designed and assembled by students to maximize agility, payload adaptability, and custom modular perception layouts.',
     label: 'RoboCup@Home Custom',
     specs: ['Dual Jetson AGX Orin · Mecanum Drive', '3D Lidar · Custom 7-DoF Manipulator'],
-  },
-]
-
-export type Pillar = { number: string; title: string; description: string }
-
-export const pillars: Pillar[] = [
-  {
-    number: '01',
-    title: 'Talent Development',
-    description:
-      'Bridging the EEE curriculum with intense, industrial-grade hardware exposure, creating elite robotics engineers who are day-one ready.',
-  },
-  {
-    number: '02',
-    title: 'Research Collaboration',
-    description:
-      'Acting as the premier engineering vehicle for NTU EEE faculties, rapidly testing cutting-edge research in dynamic environments.',
-  },
-  {
-    number: '03',
-    title: 'Global Reputation',
-    description:
-      "Elevating NTU EEE School's global branding on international stages, demonstrating engineering leadership on prestigious platforms.",
   },
 ]
 
@@ -132,18 +128,7 @@ export const milestones: Milestone[] = [
   },
 ]
 
-// Technology page — software stack
-export type AutonomyLayer = { number: string; title: string; tools: string[] }
-
-export const autonomyLayers: AutonomyLayer[] = [
-  { number: '01', title: 'Perception & SLAM', tools: ['YOLOv10', 'RTAB-Map'] },
-  { number: '02', title: 'Navigation & MPC', tools: ['Nav2', 'Teb Local Planner'] },
-  { number: '03', title: 'Manipulation Control', tools: ['MoveIt2', 'OpenArm'] },
-]
-
-export const techStack = ['ROS2', 'Nav2', 'MoveIt2', 'YOLOv10', 'Jetson AGX Orin', 'Gazebo Sim', 'Isaac Sim']
-
-// Team page — photos come from src/assets/team/ by position (advisor-1, member-1, …), so keep the order in sync
+// Team page — advisor photos come from src/assets/team/ by position (advisor-1, advisor-2, …)
 export type Advisor = { name: string; affiliation: string; description: string }
 
 export const advisors: Advisor[] = [
@@ -160,17 +145,43 @@ export const advisors: Advisor[] = [
   },
 ]
 
-export type Member = { name: string; role: string; year: string }
+// Team page — Active Members. Department tabs across the top, in this order.
+export type TeamDepartment = { id: string; name: string; description: string }
 
-export const members: Member[] = [
-  { name: 'Chen Wei Jie', role: 'Team Lead', year: 'Y3 EEE' },
-  { name: 'Sarah Al-Mansoori', role: 'Deputy Lead', year: 'Y3 CCDS' },
-  { name: 'Lim Kian Seng', role: 'Hardware Division Lead', year: 'Y4 EEE' },
-  { name: 'Emily Tan', role: 'Business Development Lead', year: 'Y3 NBS' },
-  { name: 'Rahul Ranganathan', role: 'Marketing Specialist', year: 'Y2 ADM' },
-  { name: 'Marcus Wong', role: 'Embedded Systems Engineer', year: 'Y2 EEE' },
-  { name: 'Jessica Carter', role: 'Perception Developer', year: 'Y3 EEE' },
-  { name: 'Zulkifli Hassan', role: 'Mechanical Specialist', year: 'Y3 MAE' },
+export const teamDepartments: TeamDepartment[] = [
+  { id: 'leads', name: 'Leads', description: "Steering the team's vision, strategy and coordination across every department." },
+  { id: 'software', name: 'Software', description: 'Building the perception, navigation and manipulation stack that makes our robots autonomous.' },
+  { id: 'hardware', name: 'Hardware', description: 'Designing and building the mechanical and embedded systems inside every robot.' },
+  { id: 'business', name: 'Business Development', description: 'Building relationships with the sponsors and partners who keep the team competing.' },
+  { id: 'finance', name: 'Financial Controller', description: "Managing the team's budget, purchases and sponsorship funds." },
+  { id: 'branding', name: 'Branding, Marketing & Website', description: 'Shaping the Team Robo brand across social media, events and this website.' },
+]
+
+// One row per person per department per academic year — the same shape a database table would have, so this
+// list can later be replaced by data loaded from a database. Department heads get a row in 'leads' and one in
+// their own department. The year list on the page is built from `year`.
+export type TeamMember = {
+  year: string // academic year, e.g. 'AY26/27'
+  department: string // `id` from teamDepartments
+  name: string
+  role: string
+  photo?: string // file name in src/assets/team/ (no extension) or a full image URL — default avatar if empty
+  github?: string // profile URL — falls back to teamGithubUrl
+  linkedin?: string // profile URL — falls back to teamLinkedinUrl
+}
+
+// Placeholder people until the real AY26/27 roster is ready
+export const teamMembers: TeamMember[] = [
+  { year: 'AY26/27', department: 'leads', name: 'Chen Wei Jie', role: 'Team Lead' },
+  { year: 'AY26/27', department: 'leads', name: 'Sarah Al-Mansoori', role: 'Deputy Lead' },
+  { year: 'AY26/27', department: 'leads', name: 'Lim Kian Seng', role: 'Head of Hardware' },
+  { year: 'AY26/27', department: 'leads', name: 'Emily Tan', role: 'Head of Business Development' },
+  { year: 'AY26/27', department: 'software', name: 'Jessica Carter', role: 'Perception Developer' },
+  { year: 'AY26/27', department: 'hardware', name: 'Lim Kian Seng', role: 'Head of Hardware' },
+  { year: 'AY26/27', department: 'hardware', name: 'Marcus Wong', role: 'Embedded Systems Engineer' },
+  { year: 'AY26/27', department: 'hardware', name: 'Zulkifli Hassan', role: 'Mechanical Engineer' },
+  { year: 'AY26/27', department: 'business', name: 'Emily Tan', role: 'Head of Business Development' },
+  { year: 'AY26/27', department: 'branding', name: 'Rahul Ranganathan', role: 'Marketing Specialist' },
 ]
 
 // Sponsors page — `mark` is the short wordmark shown in the logo tile until real logos are added
@@ -191,14 +202,16 @@ export const corePartners: CorePartner[] = [
   },
 ]
 
-// Brand logo wall — placeholder names until sponsors are confirmed
-export const sponsors: string[] = [
-  'Sponsor 1-1', 'Sponsor 1-2', 'Sponsor 1-4',
-  'Sponsor 2-1', 'Sponsor 2-2', 'Sponsor 2-4',
-  'Sponsor 3-1', 'Sponsor 3-2', 'Sponsor 3-4',
+// Sponsor cards — logos come from src/assets/sponsors/ by position (sponsor-1 = first card, …).
+// To add a sponsor: add an entry here and a matching sponsor-N.webp logo.
+export type Sponsor = { name: string; href?: string }
+
+export const sponsors: Sponsor[] = [
+  { name: 'NTU School of Electrical and Electronic Engineering' },
+  { name: 'NTU College of Engineering' },
 ]
 
-export const sponsorshipEmail = 'eee-teamrobo@ntu.edu.sg'
+export const sponsorshipEmail = 'teamrobontu@gmail.com'
 
 // Join Us page — flip `open` to switch the banner between "open" and "closed" wording/colours
 export const recruitment = {
@@ -212,23 +225,47 @@ export const recruitment = {
 }
 
 // Where "Apply to Team Robo Now" goes — swap in the application form URL (e.g. a Google/Microsoft Form) when ready
-export const applyUrl = `mailto:eee-teamrobo@ntu.edu.sg?subject=${encodeURIComponent('Application to Team Robo')}`
+export const applyUrl = `mailto:teamrobontu@gmail.com?subject=${encodeURIComponent('Application to Team Robo')}`
 
-export type SelectionStep = { title: string; description: string }
+// Join Us page — FAQ for first-time visitors. Answers that mention dates or eligibility
+// should be checked by the team whenever recruitment details change.
+export type Faq = { question: string; answer: string }
 
-export const selectionSteps: SelectionStep[] = [
-  { title: 'Publicity & Signups', description: 'Emails will be sent out for students' },
+export const faqs: Faq[] = [
   {
-    title: 'Technical Workshop',
-    description: 'Participate in our intensive crash course on ROS2 navigation stack setups and basic TF trees.',
+    question: 'What is Team Robo?',
+    answer:
+      "Team Robo is the competition robotics team of NTU's School of Electrical and Electronic Engineering, backed by the EEE Undergraduate Office. We build autonomous robots and compete internationally in the IEEE ICRA BARN Challenge (high-speed navigation) and RoboCup@Home (domestic service robots).",
   },
   {
-    title: 'Practical Assignment',
-    description: 'Submit a modular codebase task modeling complex obstacle navigation path architectures.',
+    question: 'Who can join? Do I have to be an EEE student?',
+    answer:
+      'Any NTU undergraduate is welcome to apply. Most of our work is engineering, but we also need people for business development, marketing and design, so students from outside EEE are encouraged too.',
   },
   {
-    title: 'Interview & Match',
-    description: 'Discuss alignment with team advisors, dynamic tasks, and structural division placements.',
+    question: 'Do I need prior robotics experience?',
+    answer:
+      'No. Curiosity and willingness to learn matter more than experience. Our technical workshop covers the basics (ROS2 navigation stacks and TF trees) before the practical assignment, so newcomers can catch up.',
+  },
+  {
+    question: 'When does recruitment happen?',
+    answer:
+      'Our main recruitment cycle runs in Semester 1. Smaller top-ups may happen in Semester 2 depending on which divisions need people. The banner at the top of this page shows whether applications are currently open.',
+  },
+  {
+    question: 'What does the selection process look like?',
+    answer:
+      'There are four steps: (1) Publicity & sign-ups, where we email interested students; (2) a technical workshop, an intensive crash course on ROS2 navigation stack setups and basic TF trees; (3) a practical assignment, a modular coding task on obstacle navigation; and (4) an interview with the team and advisors to find the division that fits you best.',
+  },
+  {
+    question: 'What roles are available?',
+    answer:
+      'Software (perception, navigation and manipulation with ROS2), hardware (embedded systems and mechanical design), and non-technical roles in business development, marketing and design.',
+  },
+  {
+    question: 'I have more questions. How can I reach you?',
+    answer:
+      'Email us at teamrobontu@gmail.com or message us on Instagram (@robo_at_eee). We are happy to chat before you apply.',
   },
 ]
 

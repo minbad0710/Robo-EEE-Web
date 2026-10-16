@@ -4,7 +4,7 @@ export default function Benchmarks() {
   return (
     <section className="page-container pt-[80px]">
       <h2 className="eyebrow font-medium text-ink" data-aos="fade-up">
-        Latest Arena Benchmarks
+        Latest Results
       </h2>
 
       <div className="mt-[48px] grid md:grid-cols-3">

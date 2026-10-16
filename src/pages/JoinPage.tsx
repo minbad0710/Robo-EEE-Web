@@ -1,6 +1,6 @@
 import ApplyCta from '../components/join/ApplyCta'
+import Faq from '../components/join/Faq'
 import RecruitmentBanner from '../components/join/RecruitmentBanner'
-import SelectionSteps from '../components/join/SelectionSteps'
 import PageHero from '../components/PageHero'
 
 export default function JoinPage() {
@@ -14,7 +14,7 @@ export default function JoinPage() {
       >
         <RecruitmentBanner />
       </PageHero>
-      <SelectionSteps />
+      <Faq />
       <ApplyCta />
     </>
   )

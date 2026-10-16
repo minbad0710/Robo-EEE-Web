@@ -20,7 +20,7 @@ export default function Hero() {
 
         <p className="mt-[24px] max-w-[640px] text-lead leading-relaxed text-body" data-aos="fade-up" data-aos-delay="300">
           Pioneering autonomous mobile manipulation, high-speed navigation, and service robotics.
-          Empowering NTU EEE undergraduates to dominate prestigious global stages.
+          Empowering Nanyang Technological University undergraduates to dominate prestigious global stages.
         </p>
 
         <div className="mt-[32px] flex flex-wrap gap-[8px]" data-aos="fade-up" data-aos-delay="400">

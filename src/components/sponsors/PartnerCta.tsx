@@ -16,10 +16,10 @@ export default function PartnerCta() {
         to NTU's top engineering minds.
       </p>
       <div className="mt-[32px] flex flex-wrap justify-center gap-[12px]" data-aos="fade-up" data-aos-delay="200">
-        <a href={partnerHref} className="btn btn--teal">
+        <a href={partnerHref} className="btn btn--primary">
           Partner With Us
         </a>
-        <a href={deckHref} className="btn btn--outline-teal">
+        <a href={deckHref} className="btn btn--outline">
           Download Deck (PDF)
         </a>
       </div>

@@ -9,7 +9,8 @@ type TrackProps = {
   figure: string
   figureLabel: string
   media: ReactNode
-  stats: TrackStat[]
+  /** Row of results under the photos — omit it to hide the row */
+  stats?: TrackStat[]
 }
 
 // One competition track: heading + figure, photo block, and a row of results underneath
@@ -35,17 +36,19 @@ export default function Track({ number, title, description, figure, figureLabel,
           {media}
         </div>
 
-        <dl className="mt-[40px] flex flex-wrap gap-x-[56px] gap-y-[24px] border-t border-line pt-[24px]">
-          {stats.map((stat, index) => (
-            <div key={stat.label} data-aos="fade-up" data-aos-delay={index * 100}>
-              <dt className="eyebrow">{stat.label}</dt>
-              <dd className={`mt-[6px] font-display text-h4 font-bold ${stat.highlight ? 'text-primary-dark' : 'text-ink'}`}>
-                {stat.value}
-              </dd>
-              {stat.note && <dd className="mt-[4px] font-code text-eyebrow text-muted">{stat.note}</dd>}
-            </div>
-          ))}
-        </dl>
+        {stats && stats.length > 0 && (
+          <dl className="mt-[40px] flex flex-wrap gap-x-[56px] gap-y-[24px] border-t border-line pt-[24px]">
+            {stats.map((stat, index) => (
+              <div key={stat.label} data-aos="fade-up" data-aos-delay={index * 100}>
+                <dt className="eyebrow">{stat.label}</dt>
+                <dd className={`mt-[6px] font-display text-h4 font-bold ${stat.highlight ? 'text-primary-dark' : 'text-ink'}`}>
+                  {stat.value}
+                </dd>
+                {stat.note && <dd className="mt-[4px] font-code text-eyebrow text-muted">{stat.note}</dd>}
+              </div>
+            ))}
+          </dl>
+        )}
       </div>
     </section>
   )

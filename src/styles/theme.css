@@ -4,22 +4,36 @@
  * from these variables via the @theme mapping in index.css.
  */
 :root {
-  /* Brand colours */
-  --color-primary: #00e5ff;        /* CTA button, footer accents */
-  --color-primary-dark: #0097a7;   /* tagline, active nav, eyebrow labels */
-  --color-primary-soft: #e6fbfd;   /* tinted backgrounds */
+  /* Logo colours — cyan artwork with silver shading on black. Everything below is built from these. */
+  --color-logo-cyan: #00f5ff;
+  --color-logo-silver: #a8a8a8;
+  --color-logo-black: #000000;
 
-  /* Neutrals */
-  --color-ink: #111827;            /* headings */
-  --color-body: #4b5563;           /* paragraph text */
-  --color-muted: #6b7280;          /* labels, captions */
-  --color-line: #e5e7eb;           /* borders, dividers */
+  /* Brand colours */
+  --color-primary: var(--color-logo-cyan); /* bright accents: footer, glows, focus rings, highlights */
+  --color-primary-dark: #007f86;   /* logo cyan darkened so text on white stays readable (4.8:1) — tagline, active nav, labels */
+  --color-primary-soft: #e6feff;   /* light cyan tint backgrounds */
+
+  /* Neutrals — true greys like the logo's silver (no blue tint) */
+  --color-ink: #0a0a0a;            /* headings */
+  --color-body: #474747;           /* paragraph text */
+  --color-muted: #6b6b6b;          /* labels, captions */
+  --color-line: #e5e5e5;           /* borders, dividers */
+  --color-line-strong: var(--color-logo-silver); /* borders that need to stand out (Team department tabs) */
   --color-surface: #ffffff;
-  --color-surface-alt: #f3f4f6;    /* badges */
-  --color-surface-soft: #f9fafb;   /* tinted cards */
-  --color-footer: #0a0a0a;
-  --color-footer-text: #d1d5db;
-  --color-footer-muted: #6b7280;
+  --color-surface-alt: #f4f4f4;    /* badges */
+  --color-surface-soft: #fafafa;   /* tinted cards */
+  --color-footer: var(--color-logo-black);
+  --color-footer-text: #d4d4d4;
+  --color-footer-muted: #8c8c8c;
+
+  /* Dark header — the logo's black, so the logo artwork sits straight on it — and its menus */
+  --color-header: var(--color-logo-black);
+  --color-header-text: #d4d4d4;    /* nav links */
+  --color-header-muted: #8c8c8c;   /* placeholders, hints */
+  --color-header-panel: #111111;   /* dropdown, search box, suggestions */
+  --color-header-hover: #1f1f1f;   /* highlighted item in those panels */
+  --color-header-line: #2e2e2e;    /* borders on the dark header */
 
   /* Layout — Figma frame is 1440px: 1280px content + 80px gutters */
   --container-max: 1280px;

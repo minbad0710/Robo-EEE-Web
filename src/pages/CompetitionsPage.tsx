@@ -5,7 +5,8 @@ import track2Banner from '../assets/competitions/track-2-banner.webp'
 import Milestones from '../components/competitions/Milestones'
 import Track from '../components/competitions/Track'
 import PageHero from '../components/PageHero'
-import { barnResults, robocupFocus } from '../data/site'
+// robocupFocus is kept for the commented-out RoboCup results row below
+import { barnResults } from '../data/site'
 
 export default function CompetitionsPage() {
   return (
@@ -32,13 +33,13 @@ export default function CompetitionsPage() {
           // Mobile: big photo on top, two small ones side by side. md+: big photo left, two stacked right.
           <div className="grid grid-cols-2 gap-[4px] md:h-[420px] md:grid-cols-[3fr_2fr] md:grid-rows-2 lg:h-[480px]">
             <div className="media-tile col-span-2 aspect-[4/3] md:col-span-1 md:row-span-2 md:aspect-auto">
-              <img src={track1Left} alt="Team members tuning the Jackal inside the cardboard BARN arena" />
+              <img src={track1Left} alt="Team Robo members at ICRA 2026 standing beside the Jackal" />
             </div>
             <div className="media-tile aspect-[4/3] md:aspect-auto">
               <img src={track1RightTop} alt="Clearpath Jackal robot driving through a narrow cardboard corridor" className="object-[center_70%]" />
             </div>
             <div className="media-tile aspect-[4/3] md:aspect-auto">
-              <img src={track1RightBottom} alt="Team Robo members at ICRA 2026 standing beside the Jackal" />
+              <img src={track1RightBottom} alt="Team members tuning the Jackal inside the cardboard BARN arena" />
             </div>
           </div>
         }
@@ -56,7 +57,8 @@ export default function CompetitionsPage() {
             <img src={track2Banner} alt="Robotic arm picking up a cup in a home living room" />
           </div>
         }
-        stats={robocupFocus}
+        // Hidden for now — uncomment to show the HRI / Manipulation / Goal Season row again
+        // stats={robocupFocus}
       />
 
       <Milestones />

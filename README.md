@@ -50,27 +50,31 @@ Robo@EEE-web/
     │   ├── theme.css       # Design tokens: colours, fonts, font sizes, layout sizes
     │   └── components.css  # Custom CSS classes too complex for inline Tailwind
     ├── data/
-    │   └── site.ts         # All page text (see "Editing content")
+    │   ├── site.ts         # All page text (see "Editing content")
+    │   └── searchIndex.ts  # What each page can be found by in the header search
     ├── utils/
     │   └── assets.ts       # byFileName() — look up a glob-imported image by its file name
     ├── pages/              # One file per route; each just stacks that page's sections
     │   ├── HomePage.tsx · AboutPage.tsx · CompetitionsPage.tsx · TechnologyPage.tsx
-    │   └── TeamPage.tsx · SponsorsPage.tsx · JoinPage.tsx · NewsPage.tsx
+    │   ├── TeamPage.tsx · SponsorsPage.tsx · JoinPage.tsx · NewsPage.tsx
+    │   └── CompetitionEventPage.tsx  # One page per competition in the header dropdown ("coming soon" for now)
     ├── components/
     │   ├── Header.tsx      # Shared by every page
+    │   ├── SearchBox.tsx   # Header search with page suggestions
     │   ├── Footer.tsx
     │   ├── PageHero.tsx    # Eyebrow + title (+ description) block at the top of inner pages
     │   ├── SocialIcon.tsx  # Inline SVG icons (email, Instagram, LinkedIn)
     │   ├── home/           # Hero, Announcement, Benchmarks, Platforms
-    │   ├── about/          # Origin, Pillars
+    │   ├── about/          # Origin
     │   ├── competitions/   # Track (one competition track), Milestones
-    │   ├── technology/     # Deployments, TwoTrack, Autonomy, Gallery
-    │   ├── team/           # Advisors, Members, teamPhotos.ts
+    │   ├── technology/     # Deployments, Gallery
+    │   ├── team/           # Advisors, Members (year list + department tabs + member cards), teamPhotos.ts
     │   ├── sponsors/       # CorePartners, SponsorWall, PartnerCta
-    │   ├── join/           # RecruitmentBanner, SelectionSteps, ApplyCta
+    │   ├── join/           # RecruitmentBanner, Faq, ApplyCta
     │   └── news/           # NewsGrid
     └── assets/
-        ├── logo.jpg        # Shared (header + footer)
+        ├── logo.jpg        # Full logo (footer, favicon)
+        ├── logo-mark.webp  # Logo artwork cropped from its black square — used on the black header
         └── <page>/         # Demo images, one folder per page, named by position (see "Images")
 ```
 
@@ -117,15 +121,22 @@ Responsive font sizes are set with `@media` blocks at the bottom of `theme.css`.
 
 ### Colours
 
+The palette is taken from the logo: **cyan** artwork with **silver** shading on **black**. All values live in `theme.css`.
+
 | Token | Value | Used for |
 |---|---|---|
-| `primary` | `#00e5ff` | Join Us button, footer hover, icons |
-| `primary-dark` | `#0097a7` | Tagline, active nav link, accent labels |
-| `ink` | `#111827` | Headings |
-| `body` | `#4b5563` | Paragraph text |
-| `muted` | `#6b7280` | Labels, captions |
-| `line` | `#e5e7eb` | Borders, dividers |
-| `footer` | `#0a0a0a` | Footer background |
+| `logo-cyan` / `primary` | `#00f5ff` | Bright accents: footer hover, glows, focus rings, text selection; cyan text on black buttons |
+| `logo-black` / `footer` | `#000000` | Main buttons (with cyan text), selected Team tab, footer background |
+| `logo-silver` / `line-strong` | `#a8a8a8` | Borders that need to stand out (Team department tabs) |
+| `primary-dark` | `#007f86` | Logo cyan darkened for text on white (4.8:1 contrast): tagline, active nav link, accent labels |
+| `primary-soft` | `#e6feff` | Light cyan tint backgrounds |
+| `header`, `header-*` | `#000000` + dark greys | The black header (same black as the logo, so the logo artwork sits straight on it) and its dropdown, search box and mobile menu |
+| `ink` | `#0a0a0a` | Headings |
+| `body` | `#474747` | Paragraph text |
+| `muted` | `#6b6b6b` | Labels, captions |
+| `line` | `#e5e5e5` | Borders, dividers |
+
+Pure logo cyan is unreadable as text on white, so text accents use `primary-dark`; use `primary`/`logo-cyan` on black or as a highlight only.
 
 ### Fonts
 
@@ -137,7 +148,7 @@ Responsive font sizes are set with `@media` blocks at the bottom of `theme.css`.
 
 ## Responsive layout notes
 
-- **Header:** full nav (8 links) from 1024px; below that, a hamburger button opens a dropdown menu (closes on link click or Esc).
+- **Header:** black, with the cropped logo artwork (`logo-mark.webp`) at 56px tall (44px on phones). Full nav (8 links) + search from 1024px; from 640px the search sits next to the hamburger button. On these sizes the search is a magnifier icon that opens into the box on hover, click/tap or keyboard focus (its full width is reserved, so the links don't move). On phones a full search box is at the top of the hamburger menu (menu closes on link click or Esc).
 - **Hero:** text and photo sit side by side from 1024px; below that the photo stacks under the text at full width in a 4:3 frame.
   The image column grows 420px → 480px → 520px at 1024 / 1280 / 1440px.
 - **Hero title width:** "ROBO@EEE" is 7.09 × the font size wide in Unbounded 700 and cannot wrap. If you change the hero font size, weight or letter-spacing, make sure the text column stays at least `7.09 × font size + ~20px` (the extra covers the desktop scrollbar).
@@ -170,16 +181,18 @@ Things to watch for:
 
 Most page text lives in `src/data/site.ts`:
 
-- `navLinks` — header page links; `footerLinks` — the first four, shown in the footer
+- `navLinks` — header page links (`children` = a hover dropdown under the link); `footerLinks` — the first four, shown in the footer
+- `competitionEvents` — the header's Competitions dropdown: `name`, `href` (its page URL, a route is created automatically) and `comingSoon` (shows a placeholder page until the page is written)
+- Header search: page descriptions and extra keywords live in `src/data/searchIndex.ts`. Every page linked from the header is searchable, dropdown pages included (e.g. each competition), so new pages are found automatically once they're in `navLinks`; in development, the browser console warns about any page that isn't. If the query matches a page name, only page names are shown ("home" → Home, "i" → ICRA BARN 2026/2027). Otherwise, with 3+ letters, content keywords are searched (member names, robots, news titles, … are pulled from `site.ts` automatically). Matching is by word start, so "ace" doesn't match "placements"
 - `contactLinks` — footer social icons (`icon`, `label` for the tooltip, `href`)
 - `benchmarks` — competition results
 - `platforms` — robot platform cards (Home) and robot deployments (Technology, incl. `label` and `specs`)
-- `advisors`, `members` — Team page (photos: `advisor-N` / `member-N` by position)
-- `recruitment` (set `open: false` to show the closed banner), `applyUrl`, `selectionSteps` — Join Us page
+- `advisors` — Team page faculty advisors (photos: `advisor-N` by position)
+- `teamDepartments` — Team page department tabs (Leads, Software, Hardware, …): name + one-line description, in tab order
+- `teamMembers` — Team page members, one row per person per department per academic year (department heads get a `leads` row and a row in their own department): `year`, `department` (a `teamDepartments` id), `name`, `role`, and optional `photo`, `github`, `linkedin`. The year list is built from the `year` values, newest first, so adding `AY27/28` rows adds that year automatically. No photo → default avatar; no GitHub/LinkedIn → the team's (`teamGithubUrl`, `teamLinkedinUrl`). The list has the same shape as a database table, so it can later be replaced by data loaded from a database without changing the page
+- `recruitment` (set `open: false` to show the closed banner), `applyUrl`, `faqs` — Join Us page
 - `newsPosts` — News page, newest first (photos: `post-N` by position); optional `href` for Read More (defaults to Instagram)
-- `corePartners`, `sponsors`, `sponsorshipEmail` — Sponsors page
-- `autonomyLayers`, `techStack` — Technology page software stack
-- `pillars` — About page Three Pillars
+- `corePartners`, `sponsors` (logos: `sponsor-N` by position; optional `href` makes the card a link), `sponsorshipEmail` — Sponsors page
 - `barnResults`, `robocupFocus` — results row under each Competitions track (`highlight: true` colours a value teal)
 - `milestones` — Competitions roadmap
 
@@ -200,10 +213,12 @@ All photos are **demo images** for now. Each page has its own folder in `src/ass
 | | `gallery-banner.webp` | Prototype Gallery, wide image |
 | | `gallery-1.webp` … `gallery-3.webp` | Prototype Gallery, small images left to right |
 | `team/` | `advisor-1.webp`, `advisor-2.webp` | Faculty advisor cards, left to right |
-| | `member-1.webp` … `member-8.webp` | Member cards in reading order, same order as `members` in `site.ts` |
+| | `default-avatar.svg` | Member cards without a photo |
+| | any name, e.g. `chen-wei-jie.webp` | A member's photo — set that member's `photo` to the file name (no extension) in `teamMembers` |
 | `news/` | `post-1.webp` … `post-6.webp` | News cards in reading order, same order as `newsPosts` in `site.ts` |
+| `sponsors/` | `sponsor-1.webp`, `sponsor-2.webp`, … | Sponsor logos in card order, same order as `sponsors` in `site.ts` (real logos, not demo) |
 
-- On the Team and News pages, the photo is picked by the card's position, so **if you reorder or add people/posts in `site.ts`, rename the photos to match**. For example, a 9th member needs `member-9.webp`.
+- For advisors, news posts and sponsors, the image is picked by the card's position, so **if you reorder or add entries in `site.ts`, rename the images to match**. For example, a 7th news post needs `post-7.webp`. Member photos are linked by name instead (their `photo` field).
 - Prefer **WebP** for photos. The hero photo went from 1.53 MB (PNG) to 108 KB (WebP) with no visible loss.
 - Photos fill their frame with `object-fit: cover`, so any aspect ratio works. The edges may be cropped.
 
@@ -211,4 +226,4 @@ All photos are **demo images** for now. Each page has its own folder in `src/ass
 
 - Article pages (or real links) for each News post's **Read More**.
 - Replace `applyUrl` (currently an email) with the real application form link.
-- Real sponsor logos and a sponsorship deck PDF for the Sponsors page.
+- A sponsorship deck PDF for the Sponsors page.

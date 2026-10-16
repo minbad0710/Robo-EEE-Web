@@ -3,7 +3,10 @@ import 'aos/dist/aos.css'
 import { useEffect, type ComponentType } from 'react'
 import Footer from './components/Footer'
 import Header from './components/Header'
+import { searchablePaths } from './data/searchIndex'
+import { competitionEvents } from './data/site'
 import AboutPage from './pages/AboutPage'
+import CompetitionEventPage from './pages/CompetitionEventPage'
 import CompetitionsPage from './pages/CompetitionsPage'
 import HomePage from './pages/HomePage'
 import JoinPage from './pages/JoinPage'
@@ -25,6 +28,20 @@ const routes: Record<string, Route> = {
   '/sponsors': { page: SponsorsPage, title: 'Sponsors · Team Robo@EEE' },
   '/join': { page: JoinPage, title: 'Join Us · Team Robo@EEE' },
   '/news': { page: NewsPage, title: 'News · Team Robo@EEE' },
+  // One page per competition in the header's Competitions dropdown
+  ...Object.fromEntries(
+    competitionEvents.map((event) => [
+      event.href,
+      { page: () => <CompetitionEventPage event={event} />, title: `${event.name} · Team Robo@EEE` },
+    ]),
+  ),
+}
+
+// Every page must be findable in the header search. During development, warn about any route that isn't
+// (fix: link it from navLinks in site.ts, as a header link or a dropdown item)
+if (import.meta.env.DEV) {
+  const missing = Object.keys(routes).filter((path) => !searchablePaths.includes(path))
+  if (missing.length > 0) console.warn(`Pages missing from the header search: ${missing.join(', ')}`)
 }
 
 // Ignore a trailing slash so /about/ matches /about

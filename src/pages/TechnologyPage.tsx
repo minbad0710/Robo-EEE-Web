@@ -1,8 +1,6 @@
 import PageHero from '../components/PageHero'
-import Autonomy from '../components/technology/Autonomy'
 import Deployments from '../components/technology/Deployments'
 import Gallery from '../components/technology/Gallery'
-import TwoTrack from '../components/technology/TwoTrack'
 
 export default function TechnologyPage() {
   return (
@@ -14,8 +12,6 @@ export default function TechnologyPage() {
         titleClassName="max-w-[780px]"
       />
       <Deployments />
-      <TwoTrack />
-      <Autonomy />
       <Gallery />
     </>
   )

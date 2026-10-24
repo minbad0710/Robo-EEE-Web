@@ -26,6 +26,19 @@
   }
 }
 
+/*
+ * Page sections alternate white / light grey, so each one reads as its own block. Applies to every
+ * <section> that is a direct child of <main> (each page's top-level sections), so new sections join in
+ * automatically; each section therefore needs its own top and bottom padding.
+ * The border-image paints the grey past the section's own width out to the screen edges (most sections
+ * are a .page-container, max 1440px wide); <main>'s overflow-x-clip trims the overhang.
+ * A section with .section-plain stays white and is left out of the count, for a section that should read
+ * as a continuation of the one above (Technology's Robot Deployments, under the page title).
+ */
+main > :nth-child(even of section:not(.section-plain)) {
+  border-image: conic-gradient(var(--color-section-alt) 0 0) fill 0 / / 0 100vw;
+}
+
 /* Heavy display type (Unbounded) used for all headings */
 .display-heading {
   font-family: var(--font-display);
@@ -522,6 +535,46 @@
   box-shadow: 0 0 6px var(--color-primary);
 }
 
+/* Home — announcement callout under the hero: cyan tint with a teal edge and a black label, so it stands out.
+   Label above the text on phones, beside it from 640px */
+.announcement {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--color-primary-dark) 30%, transparent);
+  border-left: 4px solid var(--color-primary-dark);
+  border-radius: 8px;
+  background: var(--color-primary-soft);
+  color: var(--color-ink);
+  box-shadow: 0 8px 24px -16px rgb(0 127 134 / 0.45);
+}
+
+@media (min-width: 640px) {
+  .announcement {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.125rem 1.5rem;
+  }
+}
+
+.announcement__label {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  background: var(--color-logo-black);
+  font-family: var(--font-code);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-logo-cyan);
+}
+
 /* About — tinted side card ("Strategic Transition") */
 .info-card {
   background: var(--color-surface-soft);
@@ -650,7 +703,7 @@
   box-shadow: 0 10px 24px -12px rgb(0 0 0 / 0.2);
 }
 
-/* Sponsors — wordmark tile in each core partner card */
+/* Sponsors — logo tile in each collaboration card (the short wordmark shows if a partner has no logo yet) */
 .partner-mark {
   display: flex;
   flex-shrink: 0;
@@ -658,6 +711,7 @@
   justify-content: center;
   width: 100px;
   height: 100px;
+  overflow: hidden;
   border: 1px solid var(--color-line);
   border-radius: 4px;
   background: var(--color-surface-soft);
@@ -665,6 +719,12 @@
   font-size: var(--fs-base);
   font-weight: 800;
   color: var(--color-primary-dark);
+}
+
+.partner-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Sponsors — sponsor card: logo on top, name underneath */
@@ -699,34 +759,6 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-}
-
-/* Join Us — recruitment status banner (teal when open, grey when closed) */
-.recruitment-banner {
-  --banner-accent: var(--color-primary-dark);
-  border: 1px solid var(--color-line);
-  border-radius: 8px;
-  background: var(--color-surface-soft);
-}
-
-.recruitment-banner--closed {
-  --banner-accent: var(--color-muted);
-}
-
-.recruitment-banner__icon {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: 2px solid var(--banner-accent);
-  border-radius: 9999px;
-  background: color-mix(in srgb, var(--banner-accent) 12%, white);
-  font-family: var(--font-display);
-  font-size: 1.125rem;
-  font-weight: 800;
-  color: var(--banner-accent);
 }
 
 /* Join Us — FAQ accordion (native <details>, so it works without JavaScript) */
@@ -887,26 +919,25 @@
   }
 }
 
-/* Team — department tabs: separate bordered buttons in an even grid, 2 per row on phones and 3 per row from 640px;
-   long names wrap inside their tab */
+/* Team — department tabs: equal-size bordered buttons in a single row, long names wrapping inside them.
+   Below 1280px each tab has a fixed width and the row scrolls sideways; from 1280px six equal columns fill the row */
 .department-tabs {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
   gap: 0.5rem;
-  padding: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  padding: 0.5rem 2.5rem 0.5rem 0.5rem; /* the wider end padding lets the last tab scroll clear of the fade */
   border: 1px solid var(--color-line);
   border-radius: 10px;
   background: var(--color-surface-soft);
-}
-
-@media (min-width: 640px) {
-  .department-tabs {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  /* Fades out the right edge, so a tab cut off there shows the row continues */
+  mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
 }
 
 .department-tabs__tab {
-  padding: 0.75rem 1rem;
+  flex: 0 0 9.5rem;
+  padding: 0.75rem 0.5rem;
+  text-wrap: balance;
   border: 1px solid var(--color-line-strong);
   border-radius: 7px;
   background: var(--color-surface);
@@ -929,6 +960,19 @@
   background: var(--color-logo-black);
   color: var(--color-logo-cyan);
   box-shadow: 0 6px 16px -8px rgb(0 0 0 / 0.5);
+}
+
+@media (min-width: 1280px) {
+  .department-tabs {
+    overflow-x: visible;
+    padding-right: 0.5rem;
+    mask-image: none;
+  }
+
+  .department-tabs__tab {
+    flex: 1 1 0;
+    min-width: 0;
+  }
 }
 
 /* Team — panel under the tabs */

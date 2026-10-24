@@ -10,8 +10,6 @@ export default function NewsPage() {
         description="Follow our updates from simulated environment benchmarks to international competition physical finals and local technical workshops."
         titleClassName="max-w-[1000px]"
         descriptionClassName="max-w-[640px]"
-        contained
-        divider={false}
       />
       <NewsGrid />
     </>

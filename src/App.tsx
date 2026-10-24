@@ -49,13 +49,14 @@ const currentPath = window.location.pathname.replace(/(.)\/+$/, '$1')
 const route = routes[currentPath] ?? routes['/']
 
 function App() {
-  // Scroll-reveal animations — elements opt in with data-aos="..." attributes
+  // Scroll-reveal animations on cards and photos only, never on headings or text, each playing once
+  // (see "Animations" in the README)
   useEffect(() => {
     AOS.init({
-      duration: 700,
+      duration: 900,
       easing: 'ease-out-cubic',
-      once: false, // replay every time an element scrolls into view
-      offset: 80,
+      once: true,
+      offset: 100,
       disable: () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
     })
   }, [])
@@ -69,7 +70,8 @@ function App() {
   return (
     <>
       <Header currentPath={currentPath} />
-      {/* overflow-x-clip hides the off-screen start position of fade-left/right without breaking the sticky header */}
+      {/* overflow-x-clip trims the grey section backgrounds where they run past the screen edges (see components.css),
+          without breaking the sticky header */}
       <main className="overflow-x-clip">
         <Page />
       </main>

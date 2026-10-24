@@ -1,9 +1,7 @@
 import {
-  advisors,
   benchmarks,
   corePartners,
   teamDepartments,
-  teamMembers,
   milestones,
   navLinks,
   newsPosts,
@@ -15,7 +13,8 @@ import {
 export type SearchPage = NavLink & { description: string; keywords: string[] }
 
 // What each page can be found by, on top of its name. Lists pulled from site.ts
-// (members, robots, news titles, …) stay in sync automatically.
+// (robots, news titles, …) stay in sync automatically. Member names aren't searchable: they come from the
+// backend, which is only called on the Team page.
 const pageDetails: Record<string, { description: string; keywords: string[] }> = {
   '/': {
     description: 'Overview, latest results and robot platforms',
@@ -34,12 +33,12 @@ const pageDetails: Record<string, { description: string; keywords: string[] }> =
     keywords: ['tech', 'robots', 'robot deployments', 'platforms', 'hardware', 'software', 'specs', 'prototype gallery', 'cad', ...platforms.map((p) => p.name), ...platforms.flatMap((p) => p.specs)],
   },
   '/team': {
-    description: 'Faculty advisors and active members',
-    keywords: ['our team', 'members', 'people', 'who we are', 'advisors', 'faculty', 'professor', 'leads', ...teamDepartments.map((d) => d.name), ...advisors.map((a) => a.name), ...teamMembers.map((m) => m.name), ...teamMembers.map((m) => m.role)],
+    description: 'Advisors and active members',
+    keywords: ['our team', 'members', 'people', 'who we are', 'advisors', 'faculty', 'professor', 'student advisors', 'leads', ...teamDepartments.map((d) => d.name)],
   },
   '/sponsors': {
-    description: 'Partners, sponsors and partnering with us',
-    keywords: ['sponsor', 'partners', 'partnership', 'partner with us', 'sponsorship deck', 'supporters', ...corePartners.map((p) => p.name), ...sponsors.map((s) => s.name)],
+    description: 'Collaborations, sponsors and partnering with us',
+    keywords: ['sponsor', 'partners', 'collaborations', 'collaboration', 'partnership', 'partner with us', 'sponsorship deck', 'supporters', ...corePartners.map((p) => p.name), ...sponsors.map((s) => s.name)],
   },
   '/join': {
     description: 'Recruitment, FAQ and how to apply',
@@ -74,7 +73,7 @@ const index = flatten(navLinks).map(({ link, parent }) => {
   }
 })
 
-// Every typed word has to be the start of one of the page's words ("chen wei" → Chen Wei Jie)
+// Every typed word has to be the start of one of the page's words ("barn chal" → BARN Challenge)
 const allWordsMatch = (typed: string[], pageWords: string[]) =>
   typed.every((word) => pageWords.some((pageWord) => pageWord.startsWith(word)))
 

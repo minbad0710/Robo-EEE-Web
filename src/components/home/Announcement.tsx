@@ -1,13 +1,15 @@
+// Home — callout at the bottom of the hero, styled to stand out (see .announcement in components.css)
 export default function Announcement() {
   return (
-    <section className="page-container" data-aos="fade-up">
-      <p className="flex flex-col gap-[8px] text-sm text-ink sm:flex-row sm:items-baseline sm:gap-[16px]">
-        <span className="eyebrow shrink-0">Announcement</span>
-        <span>
-          Formerly MLDA@EEE Robotics Team → now rebranded to <strong>Team Robo</strong> directly under
-          the NTU EEE Undergraduate Office.
-        </span>
+    <aside className="announcement" aria-labelledby="announcement-label">
+      <span id="announcement-label" className="announcement__label">
+        <span className="status-dot" aria-hidden="true" />
+        Announcement
+      </span>
+      <p className="text-base leading-relaxed font-[500] md:text-lead">
+        Formerly MLDA@EEE Robotics Team → now rebranded to <strong className="font-[700]">Team Robo</strong> directly
+        under the NTU EEE Undergraduate Office.
       </p>
-    </section>
+    </aside>
   )
 }

@@ -12,7 +12,7 @@ const thumbnails = [
 export default function Gallery() {
   return (
     <section className="page-container pt-[64px] pb-[80px] md:pt-[88px] md:pb-[112px]">
-      <div data-aos="fade-up">
+      <div>
         <p className="eyebrow eyebrow--accent">Build Archive</p>
         <h2 className="display-heading mt-[16px] text-h2 uppercase">Prototype Gallery</h2>
       </div>

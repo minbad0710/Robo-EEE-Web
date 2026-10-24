@@ -2,9 +2,9 @@ import { platforms } from '../../data/site'
 
 export default function Platforms() {
   return (
-    <section className="page-container pt-[112px] pb-[96px] md:pt-[144px]">
+    <section className="page-container py-[72px] md:py-[112px]">
       <div className="flex flex-wrap items-end gap-[24px]">
-        <div className="shrink-0" data-aos="fade-up">
+        <div className="shrink-0">
           <p className="eyebrow">Active Systems</p>
           <h2 className="display-heading mt-[12px] text-h2 uppercase">
             Robot
@@ -12,11 +12,7 @@ export default function Platforms() {
             Platforms
           </h2>
         </div>
-        <p
-          className="ml-auto max-w-[320px] grow basis-[240px] text-right text-sm leading-relaxed text-muted"
-          data-aos="fade-up"
-          data-aos-delay="150"
-        >
+        <p className="ml-auto max-w-[320px] grow basis-[240px] text-right text-sm leading-relaxed text-muted">
           Dual-track engineering focus allowing simultaneous baseline verification and custom in-house
           hardware integration.
         </p>

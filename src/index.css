@@ -55,3 +55,15 @@
     -webkit-font-smoothing: antialiased;
   }
 }
+
+/*
+ * AOS is off for "reduce motion" visitors (App.tsx) but only un-hides elements that exist when it starts;
+ * this keeps anything rendered later (like the Team page cards loaded from the API) visible too.
+ * It sits outside the layers so it can override AOS's own CSS, which is unlayered.
+ */
+@media (prefers-reduced-motion: reduce) {
+  [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

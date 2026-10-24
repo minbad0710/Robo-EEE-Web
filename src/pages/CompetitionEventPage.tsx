@@ -9,19 +9,19 @@ type CompetitionEventPageProps = { event: CompetitionEvent }
 export default function CompetitionEventPage({ event }: CompetitionEventPageProps) {
   return (
     <section className="page-container flex min-h-[60vh] flex-col justify-center py-[72px] md:py-[112px]">
-      <a href="/competitions" className="back-link" data-aos="fade-up">
+      <a href="/competitions" className="back-link">
         <span aria-hidden="true">←</span> All competitions
       </a>
 
-      <p className="eyebrow eyebrow--accent mt-[40px]" data-aos="fade-up">
+      <p className="eyebrow eyebrow--accent mt-[40px]">
         Competition
       </p>
-      <h1 className="display-heading mt-[16px] text-h1 leading-[1.15]" data-aos="fade-up" data-aos-delay="100">
+      <h1 className="display-heading mt-[16px] text-h1 leading-[1.15]">
         {event.name}
       </h1>
 
       {event.comingSoon && (
-        <div data-aos="fade-up" data-aos-delay="200">
+        <div>
           <span className="coming-soon-badge mt-[24px]">
             <span className="status-dot" aria-hidden="true" />
             Coming soon

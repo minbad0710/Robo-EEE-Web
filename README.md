@@ -15,6 +15,8 @@ yarn preview     # preview the production build
 yarn lint        # run ESLint
 ```
 
+The Team page loads its members from the backend API (`../backend`), so start that too (`cd ../backend && yarn dev`). See "Team members" below.
+
 ## Tech stack
 
 | Tool | Version | What it's used for |
@@ -24,7 +26,7 @@ yarn lint        # run ESLint
 | [TypeScript](https://www.typescriptlang.org) | 6 | Type safety (`.tsx` / `.ts` files) |
 | [React Compiler](https://react.dev/learn/react-compiler) | 1 | Automatic memoization, via `@rolldown/plugin-babel` |
 | [Tailwind CSS](https://tailwindcss.com) | 4 | Utility classes for layout and spacing, via `@tailwindcss/vite` |
-| [AOS](https://michalsnik.github.io/aos/) | 2 | Scroll-reveal animations |
+| [AOS](https://michalsnik.github.io/aos/) | 2 | Scroll-reveal animations (see "Animations") |
 | [ESLint](https://eslint.org) | 10 | Linting, with React Hooks and React Refresh rules |
 | Google Fonts | — | Unbounded, Geist, Geist Mono (loaded in `index.html`) |
 
@@ -45,15 +47,18 @@ Robo@EEE-web/
 └── src/
     ├── main.tsx            # React entry point
     ├── App.tsx             # Routes, shared layout (header/footer), AOS setup
-    ├── index.css           # Tailwind import + maps CSS tokens to Tailwind classes
+    ├── index.css           # Tailwind import + maps CSS tokens to Tailwind classes, AOS "reduce motion" fix
     ├── styles/
     │   ├── theme.css       # Design tokens: colours, fonts, font sizes, layout sizes
     │   └── components.css  # Custom CSS classes too complex for inline Tailwind
     ├── data/
     │   ├── site.ts         # All page text (see "Editing content")
+    │   ├── teamMembers.ts  # Loads the Team page's people from the backend (see "Team members")
     │   └── searchIndex.ts  # What each page can be found by in the header search
     ├── utils/
-    │   └── assets.ts       # byFileName() — look up a glob-imported image by its file name
+    │   ├── assets.ts       # byFileName() — look up a glob-imported image by its file name
+    │   ├── api.ts          # getJson() — GET request to the backend API
+    │   └── cloudinary.ts   # facePhoto() — face-centred crop of a Cloudinary photo
     ├── pages/              # One file per route; each just stacks that page's sections
     │   ├── HomePage.tsx · AboutPage.tsx · CompetitionsPage.tsx · TechnologyPage.tsx
     │   ├── TeamPage.tsx · SponsorsPage.tsx · JoinPage.tsx · NewsPage.tsx
@@ -63,14 +68,14 @@ Robo@EEE-web/
     │   ├── SearchBox.tsx   # Header search with page suggestions
     │   ├── Footer.tsx
     │   ├── PageHero.tsx    # Eyebrow + title (+ description) block at the top of inner pages
-    │   ├── SocialIcon.tsx  # Inline SVG icons (email, Instagram, LinkedIn)
+    │   ├── SocialIcon.tsx  # Inline SVG icons (email, Instagram, LinkedIn, GitHub, website)
     │   ├── home/           # Hero, Announcement, Benchmarks, Platforms
     │   ├── about/          # Origin
     │   ├── competitions/   # Track (one competition track), Milestones
     │   ├── technology/     # Deployments, Gallery
-    │   ├── team/           # Advisors, Members (year list + department tabs + member cards), teamPhotos.ts
+    │   ├── team/           # Advisors, Members (year list + department tabs + member cards)
     │   ├── sponsors/       # CorePartners, SponsorWall, PartnerCta
-    │   ├── join/           # RecruitmentBanner, Faq, ApplyCta
+    │   ├── join/           # ApplyCta, Faq
     │   └── news/           # NewsGrid
     └── assets/
         ├── logo.jpg        # Full logo (footer, favicon)
@@ -108,6 +113,11 @@ Rule of thumb: a component used by **one** page goes in that page's folder; a co
   | `min-[1440px]:` | 1440px (custom) |
 
 - **Use `.page-container`** on every section. It centres content at a max of 1280px with side gutters of 16px (mobile), 32px (≥768px) and 80px (≥1280px), matching the 1440px Figma frame.
+- **Sections alternate white / light grey** (`section-alt`) so each one reads as its own block. This happens automatically for every `<section>` a page puts directly inside `<main>` (the rule is at the top of `components.css`), so:
+  - give every section its own top **and** bottom padding (e.g. `py-[64px] md:py-[96px]`), not just top padding that relies on the next section;
+  - `<main>` has `overflow-x-clip` to trim the grey where it runs past the screen edges. Don't change it to `overflow-hidden`, which breaks the sticky header;
+  - a section that is only sometimes shown flips the colours of the sections after it, so keep it in place while its data loads (see `Advisors.tsx`);
+  - to keep a section white and out of the count, so it reads as part of the section above, give it `className="section-plain"` (Technology's Robot Deployments, which follows straight on from the page title).
 - `components.css` is imported into Tailwind's `components` layer, so a Tailwind class on an element always overrides the shared class.
 
 ### How design tokens become Tailwind classes
@@ -135,6 +145,7 @@ The palette is taken from the logo: **cyan** artwork with **silver** shading on 
 | `body` | `#474747` | Paragraph text |
 | `muted` | `#6b6b6b` | Labels, captions |
 | `line` | `#e5e5e5` | Borders, dividers |
+| `section-alt` | `#f5f5f5` | Background of every other page section |
 
 Pure logo cyan is unreadable as text on white, so text accents use `primary-dark`; use `primary`/`logo-cyan` on black or as a highlight only.
 
@@ -154,28 +165,28 @@ Pure logo cyan is unreadable as text on white, so text accents use `primary-dark
 - **Hero title width:** "ROBO@EEE" is 7.09 × the font size wide in Unbounded 700 and cannot wrap. If you change the hero font size, weight or letter-spacing, make sure the text column stays at least `7.09 × font size + ~20px` (the extra covers the desktop scrollbar).
 - **Footer:** centred and stacked below 1024px; split left/right in 3 columns from 1024px.
 
-## Animations (AOS)
+## Animations
 
-AOS is initialised once in `App.tsx`:
+Scroll-reveal animations use [AOS](https://michalsnik.github.io/aos/), set up in `App.tsx`: 900ms with `ease-out-cubic`, each element playing **once**, the first time it scrolls into view. They are off for visitors with "reduce motion" turned on.
 
-```ts
-AOS.init({ duration: 700, easing: 'ease-out-cubic', once: false, offset: 80 })
-```
+Keep it balanced: **animate the visual blocks, not the text.**
 
-- `once: false` replays the animation every time an element scrolls into view.
-- Animations are disabled for users with "reduce motion" turned on in their OS.
-- The footer has no animation, by design.
-
-Add an animation to any element with data attributes:
+- Cards fade up one by one: `data-aos="fade-up"` with a small stagger, e.g. `data-aos-delay={index * 150}` (or `(index % 3) * 100` in 3-column grids, so each row starts again).
+- Photos beside text slide in from their side: `fade-left` / `fade-right` (home hero photo, About info card, Technology deployment photos).
+- Big standalone photos fade up (Competitions track photos, Prototype Gallery).
+- Headings, paragraphs, page titles, the call-to-action sections, the announcement, the FAQ list, milestone rows, the Team members panel, the header and the footer don't animate.
 
 ```tsx
-<div data-aos="fade-up" data-aos-delay="150" data-aos-duration="900">…</div>
+{items.map((item, index) => (
+  <article key={item.id} className="team-card" data-aos="fade-up" data-aos-delay={index * 150}>…</article>
+))}
 ```
 
 Things to watch for:
 
-- AOS sets `transform`, which overrides hover effects that also use `transform`. Put `data-aos` on a **wrapper** element instead (see the platform cards in `Platforms.tsx`).
-- `<main>` has `overflow-x-clip` so slide-in animations don't cause horizontal scrolling. Don't change it to `overflow-hidden` — that breaks the sticky header.
+- Don't put `data-aos` on a page's `<section>` itself: its grey background would fade in with it.
+- AOS sets `transform`, which overrides hover effects that also use `transform`. For cards with a hover lift, put `data-aos` on a **wrapper** around the card (see the cards in `Platforms.tsx`, `NewsGrid.tsx`, `SponsorWall.tsx`).
+- Cards loaded later (the Team page advisors from the API) still animate, because AOS watches for new elements. For "reduce motion" visitors, a rule in `index.css` makes sure they show.
 
 ## Editing content
 
@@ -183,20 +194,28 @@ Most page text lives in `src/data/site.ts`:
 
 - `navLinks` — header page links (`children` = a hover dropdown under the link); `footerLinks` — the first four, shown in the footer
 - `competitionEvents` — the header's Competitions dropdown: `name`, `href` (its page URL, a route is created automatically) and `comingSoon` (shows a placeholder page until the page is written)
-- Header search: page descriptions and extra keywords live in `src/data/searchIndex.ts`. Every page linked from the header is searchable, dropdown pages included (e.g. each competition), so new pages are found automatically once they're in `navLinks`; in development, the browser console warns about any page that isn't. If the query matches a page name, only page names are shown ("home" → Home, "i" → ICRA BARN 2026/2027). Otherwise, with 3+ letters, content keywords are searched (member names, robots, news titles, … are pulled from `site.ts` automatically). Matching is by word start, so "ace" doesn't match "placements"
+- Header search: page descriptions and extra keywords live in `src/data/searchIndex.ts`. Every page linked from the header is searchable, dropdown pages included (e.g. each competition), so new pages are found automatically once they're in `navLinks`; in development, the browser console warns about any page that isn't. If the query matches a page name, only page names are shown ("home" → Home, "i" → ICRA BARN 2026/2027). Otherwise, with 3+ letters, content keywords are searched (robots, news titles, … are pulled from `site.ts` automatically; member names aren't, since they come from the backend). Matching is by word start, so "ace" doesn't match "placements"
 - `contactLinks` — footer social icons (`icon`, `label` for the tooltip, `href`)
 - `benchmarks` — competition results
 - `platforms` — robot platform cards (Home) and robot deployments (Technology, incl. `label` and `specs`)
-- `advisors` — Team page faculty advisors (photos: `advisor-N` by position)
-- `teamDepartments` — Team page department tabs (Leads, Software, Hardware, …): name + one-line description, in tab order
-- `teamMembers` — Team page members, one row per person per department per academic year (department heads get a `leads` row and a row in their own department): `year`, `department` (a `teamDepartments` id), `name`, `role`, and optional `photo`, `github`, `linkedin`. The year list is built from the `year` values, newest first, so adding `AY27/28` rows adds that year automatically. No photo → default avatar; no GitHub/LinkedIn → the team's (`teamGithubUrl`, `teamLinkedinUrl`). The list has the same shape as a database table, so it can later be replaced by data loaded from a database without changing the page
-- `recruitment` (set `open: false` to show the closed banner), `applyUrl`, `faqs` — Join Us page
+- `teamDepartments` — Team page department tabs (Leads, Software, Hardware, …): name + one-line description, in tab order. The people are in the database (see "Team members")
+- `applyUrl`, `faqs` — Join Us page
 - `newsPosts` — News page, newest first (photos: `post-N` by position); optional `href` for Read More (defaults to Instagram)
-- `corePartners`, `sponsors` (logos: `sponsor-N` by position; optional `href` makes the card a link), `sponsorshipEmail` — Sponsors page
+- `corePartners` (the "Collaborations" cards; logos: `partner-N` by position, `mark` shows if there's no logo), `sponsors` (logos: `sponsor-N` by position; optional `href` makes the card a link), `sponsorshipEmail` — Sponsors page
 - `barnResults`, `robocupFocus` — results row under each Competitions track (`highlight: true` colours a value teal)
 - `milestones` — Competitions roadmap
 
 To add a new social icon, add an entry to `contactLinks` and draw its SVG in `SocialIcon.tsx`.
+
+## Team members
+
+The Team page's advisors and members come from the backend (`GET /api/team-members`, MongoDB), with photos on Cloudinary. They are added and edited through the backend, not in this project: see `../backend/README.md`. The current roster is in `../backend/seed/teamMembers.data.js`.
+
+- Each person has one entry per department per academic year. Department leads have one in `leads` and one in their own department. Advisors use the department `advisors` and appear in the Advisors section, not in a tab.
+- The year list is built from the years in the data, newest first, so adding `AY27/28` members adds that year automatically.
+- No photo → default avatar. The GitHub, LinkedIn and website icons only show for the links a person has (`MemberLinks.tsx`).
+- Photos are cropped around the face by Cloudinary (`facePhoto()` in `utils/cloudinary.ts`), so any photo shape works.
+- The API address is `http://localhost:5000/api` in development. **For the deployed site, set `VITE_API_URL`** (e.g. in Vercel → Settings → Environment Variables) to the deployed backend's URL. Without it, the deployed Team page shows "The member list couldn't be loaded". The backend's `CLIENT_ORIGIN` must also include the site's URL.
 
 ## Images
 
@@ -212,13 +231,12 @@ All photos are **demo images** for now. Each page has its own folder in `src/ass
 | `technology/` | `deployment-1.webp` … `deployment-3.webp` | Robot Deployments rows, top to bottom (Jackal, Galaxea R1, In-House) |
 | | `gallery-banner.webp` | Prototype Gallery, wide image |
 | | `gallery-1.webp` … `gallery-3.webp` | Prototype Gallery, small images left to right |
-| `team/` | `advisor-1.webp`, `advisor-2.webp` | Faculty advisor cards, left to right |
-| | `default-avatar.svg` | Member cards without a photo |
-| | any name, e.g. `chen-wei-jie.webp` | A member's photo — set that member's `photo` to the file name (no extension) in `teamMembers` |
+| `team/` | `default-avatar.svg` | Member and advisor cards without a photo (real photos are on Cloudinary, see "Team members") |
 | `news/` | `post-1.webp` … `post-6.webp` | News cards in reading order, same order as `newsPosts` in `site.ts` |
 | `sponsors/` | `sponsor-1.webp`, `sponsor-2.webp`, … | Sponsor logos in card order, same order as `sponsors` in `site.ts` (real logos, not demo) |
+| | `partner-1.webp`, `partner-2.webp`, … | Collaboration logos (MLDA@EEE, Garage@EEE) in card order, same order as `corePartners` in `site.ts`; shown square, so use square images |
 
-- For advisors, news posts and sponsors, the image is picked by the card's position, so **if you reorder or add entries in `site.ts`, rename the images to match**. For example, a 7th news post needs `post-7.webp`. Member photos are linked by name instead (their `photo` field).
+- For news posts, sponsors and collaborations, the image is picked by the card's position, so **if you reorder or add entries in `site.ts`, rename the images to match**. For example, a 7th news post needs `post-7.webp`.
 - Prefer **WebP** for photos. The hero photo went from 1.53 MB (PNG) to 108 KB (WebP) with no visible loss.
 - Photos fill their frame with `object-fit: cover`, so any aspect ratio works. The edges may be cropped.
 

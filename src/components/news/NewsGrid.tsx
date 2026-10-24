@@ -13,7 +13,7 @@ export default function NewsGrid() {
   const hasMore = visible < newsPosts.length
 
   return (
-    <section className="page-container pb-[80px] md:pb-[96px]">
+    <section className="page-container pt-[56px] pb-[80px] md:pt-[80px] md:pb-[96px]">
       {/* items-start: cards keep their own height, as in the Figma */}
       <div className="grid items-start gap-x-[28px] gap-y-[32px] md:grid-cols-2 md:gap-y-[48px] lg:grid-cols-3 lg:gap-y-[72px]">
         {newsPosts.slice(0, visible).map((post, index) => {
@@ -48,7 +48,7 @@ export default function NewsGrid() {
       </div>
 
       {/* Loads the next 6 posts; once everything is shown, older posts live on Instagram */}
-      <div className="mt-[48px] text-center md:mt-[64px]" data-aos="fade-up">
+      <div className="mt-[48px] text-center md:mt-[64px]">
         {hasMore ? (
           <button type="button" className="btn btn--soft-teal" onClick={() => setVisible((n) => n + PAGE_SIZE)}>
             Load Archived Posts

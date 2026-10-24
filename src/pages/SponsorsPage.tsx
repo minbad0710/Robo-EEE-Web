@@ -11,11 +11,9 @@ export default function SponsorsPage() {
         title="Sponsors & Strategic Partners"
         description="Driving podium performance requires cutting-edge platforms, spatial sensors, and premier simulation architectures. Our industry allies make it happen."
         titleClassName="max-w-[1100px]"
-        contained
-        divider={false}
       />
-      <CorePartners />
       <SponsorWall />
+      <CorePartners />
       <PartnerCta />
     </>
   )

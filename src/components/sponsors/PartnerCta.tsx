@@ -7,15 +7,13 @@ const deckHref = `mailto:${sponsorshipEmail}?subject=${encodeURIComponent('Spons
 
 export default function PartnerCta() {
   return (
-    <section className="page-container pt-[96px] pb-[80px] text-center md:pt-[144px] md:pb-[96px]">
-      <h2 className="display-heading text-h2" data-aos="fade-up">
-        Partner With Team Robo
-      </h2>
-      <p className="mx-auto mt-[24px] max-w-[540px] text-sm leading-relaxed text-body" data-aos="fade-up" data-aos-delay="100">
+    <section className="page-container py-[72px] text-center md:py-[112px]">
+      <h2 className="display-heading text-h2">Partner With Team Robo</h2>
+      <p className="mx-auto mt-[24px] max-w-[540px] text-sm leading-relaxed text-body">
         Empower Singapore's elite student robotics team while gaining prominent corporate visibility and direct access
         to NTU's top engineering minds.
       </p>
-      <div className="mt-[32px] flex flex-wrap justify-center gap-[12px]" data-aos="fade-up" data-aos-delay="200">
+      <div className="mt-[32px] flex flex-wrap justify-center gap-[12px]">
         <a href={partnerHref} className="btn btn--primary">
           Partner With Us
         </a>

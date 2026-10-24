@@ -29,12 +29,10 @@ export const navLinks: NavLink[] = [
 // The footer keeps the original four page links
 export const footerLinks: NavLink[] = navLinks.slice(0, 4)
 
-export type SocialIcon = 'email' | 'instagram' | 'linkedin' | 'github'
+export type SocialIcon = 'email' | 'instagram' | 'linkedin' | 'github' | 'website'
 
 export type ContactLink = NavLink & { icon: SocialIcon }
 
-// Team-wide profiles — also the fallback for members who have no GitHub/LinkedIn of their own yet
-export const teamGithubUrl = 'https://github.com/Team-Robo'
 export const teamLinkedinUrl = 'https://www.linkedin.com/company/robo-at-eee/posts/?feedView=all'
 
 // `label` is used as the icon's accessible name and hover tooltip
@@ -128,24 +126,8 @@ export const milestones: Milestone[] = [
   },
 ]
 
-// Team page — advisor photos come from src/assets/team/ by position (advisor-1, advisor-2, …)
-export type Advisor = { name: string; affiliation: string; description: string }
-
-export const advisors: Advisor[] = [
-  {
-    name: 'Asst Prof Ziwei Wang',
-    affiliation: 'EEE Department · PINE Lab',
-    description: 'Pioneering service robotics collaborations and providing elite baseline robotic frameworks.',
-  },
-  {
-    name: 'Asst Prof Yoonchang Sung',
-    affiliation: 'School of CCDS',
-    description:
-      'Directing strategic multi-agent trajectory exploration and algorithmic verification under academic paradigms.',
-  },
-]
-
-// Team page — Active Members. Department tabs across the top, in this order.
+// Team page — Active Members. Department tabs across the top, in this order. The people themselves (advisors
+// included) come from the backend: see data/teamMembers.ts.
 export type TeamDepartment = { id: string; name: string; description: string }
 
 export const teamDepartments: TeamDepartment[] = [
@@ -157,34 +139,8 @@ export const teamDepartments: TeamDepartment[] = [
   { id: 'branding', name: 'Branding, Marketing & Website', description: 'Shaping the Team Robo brand across social media, events and this website.' },
 ]
 
-// One row per person per department per academic year — the same shape a database table would have, so this
-// list can later be replaced by data loaded from a database. Department heads get a row in 'leads' and one in
-// their own department. The year list on the page is built from `year`.
-export type TeamMember = {
-  year: string // academic year, e.g. 'AY26/27'
-  department: string // `id` from teamDepartments
-  name: string
-  role: string
-  photo?: string // file name in src/assets/team/ (no extension) or a full image URL — default avatar if empty
-  github?: string // profile URL — falls back to teamGithubUrl
-  linkedin?: string // profile URL — falls back to teamLinkedinUrl
-}
-
-// Placeholder people until the real AY26/27 roster is ready
-export const teamMembers: TeamMember[] = [
-  { year: 'AY26/27', department: 'leads', name: 'Chen Wei Jie', role: 'Team Lead' },
-  { year: 'AY26/27', department: 'leads', name: 'Sarah Al-Mansoori', role: 'Deputy Lead' },
-  { year: 'AY26/27', department: 'leads', name: 'Lim Kian Seng', role: 'Head of Hardware' },
-  { year: 'AY26/27', department: 'leads', name: 'Emily Tan', role: 'Head of Business Development' },
-  { year: 'AY26/27', department: 'software', name: 'Jessica Carter', role: 'Perception Developer' },
-  { year: 'AY26/27', department: 'hardware', name: 'Lim Kian Seng', role: 'Head of Hardware' },
-  { year: 'AY26/27', department: 'hardware', name: 'Marcus Wong', role: 'Embedded Systems Engineer' },
-  { year: 'AY26/27', department: 'hardware', name: 'Zulkifli Hassan', role: 'Mechanical Engineer' },
-  { year: 'AY26/27', department: 'business', name: 'Emily Tan', role: 'Head of Business Development' },
-  { year: 'AY26/27', department: 'branding', name: 'Rahul Ranganathan', role: 'Marketing Specialist' },
-]
-
-// Sponsors page — `mark` is the short wordmark shown in the logo tile until real logos are added
+// Sponsors page, "Collaborations". Logos come from src/assets/sponsors/ by position (partner-1 = first card, …);
+// `mark` is the short wordmark shown in the logo tile when a partner has no logo file
 export type CorePartner = { name: string; mark: string; description: string }
 
 export const corePartners: CorePartner[] = [
@@ -213,17 +169,6 @@ export const sponsors: Sponsor[] = [
 
 export const sponsorshipEmail = 'teamrobontu@gmail.com'
 
-// Join Us page — flip `open` to switch the banner between "open" and "closed" wording/colours
-export const recruitment = {
-  open: true,
-  openTitle: 'Semester 1 Main Recruitment Cycle Now Open',
-  openDescription:
-    'We are actively accepting applications for the 2026 Competition Season. Minor top-ups occur during Semester 2 depending on division demand.',
-  closedTitle: 'Recruitment Is Currently Closed',
-  closedDescription:
-    'Our next main recruitment cycle opens in Semester 1. Follow us on Instagram or LinkedIn to hear when applications reopen.',
-}
-
 // Where "Apply to Team Robo Now" goes — swap in the application form URL (e.g. a Google/Microsoft Form) when ready
 export const applyUrl = `mailto:teamrobontu@gmail.com?subject=${encodeURIComponent('Application to Team Robo')}`
 
@@ -250,7 +195,7 @@ export const faqs: Faq[] = [
   {
     question: 'When does recruitment happen?',
     answer:
-      'Our main recruitment cycle runs in Semester 1. Smaller top-ups may happen in Semester 2 depending on which divisions need people. The banner at the top of this page shows whether applications are currently open.',
+      'Our main recruitment cycle runs in Semester 1. Smaller top-ups may happen in Semester 2 depending on which divisions need people. Follow us on Instagram or LinkedIn to hear when applications open.',
   },
   {
     question: 'What does the selection process look like?',

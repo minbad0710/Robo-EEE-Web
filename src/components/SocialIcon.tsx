@@ -30,6 +30,15 @@ export default function SocialIcon({ name, className }: SocialIconProps) {
     )
   }
 
+  if (name === 'website') {
+    return (
+      <svg {...common} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="9.5" />
+        <path d="M2.5 12h19M12 2.5c2.4 2.6 3.6 5.77 3.6 9.5s-1.2 6.9-3.6 9.5c-2.4-2.6-3.6-5.77-3.6-9.5s1.2-6.9 3.6-9.5Z" />
+      </svg>
+    )
+  }
+
   if (name === 'github') {
     return (
       <svg {...common} fill="currentColor">

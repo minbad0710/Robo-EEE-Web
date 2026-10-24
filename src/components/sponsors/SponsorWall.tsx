@@ -6,10 +6,8 @@ const logos = byFileName(import.meta.glob<string>('../../assets/sponsors/*.webp'
 
 export default function SponsorWall() {
   return (
-    <section className="page-container pt-[80px] md:pt-[128px]">
-      <h2 className="eyebrow eyebrow--accent" data-aos="fade-up">
-        Supported by Leading Brands
-      </h2>
+    <section className="page-container py-[64px] md:py-[96px]">
+      <h2 className="eyebrow eyebrow--accent">Supported by Leading Brands</h2>
 
       <ul className="mt-[24px] grid grid-cols-1 gap-[20px] min-[480px]:grid-cols-2 md:mt-[32px] lg:grid-cols-3 lg:gap-[28px]">
         {sponsors.map((sponsor, index) => {

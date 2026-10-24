@@ -2,7 +2,7 @@ export default function Origin() {
   return (
     <section>
       <div className="page-container grid items-start gap-[40px] py-[64px] md:py-[96px] lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-[64px] xl:gap-[80px]">
-        <div data-aos="fade-up">
+        <div>
           <h2 className="font-display text-sm font-bold uppercase text-primary-dark">Founded in 2024</h2>
 
           <div className="mt-[24px] flex max-w-[720px] flex-col gap-[24px] text-lead leading-relaxed text-body">

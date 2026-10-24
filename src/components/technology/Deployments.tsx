@@ -15,10 +15,11 @@ const photos: (Photo | null)[] = [
 
 export default function Deployments() {
   return (
-    <section className="pt-[40px] md:pt-[48px]">
-      <div className="page-container flex items-baseline justify-between gap-[24px]" data-aos="fade-up">
-        <h2 className="font-display text-sm font-bold uppercase text-ink">Robot Deployments</h2>
-        <p className="eyebrow">{String(platforms.length).padStart(2, '0')} Platforms</p>
+    // section-plain: no grey band, so it carries on from the page title above (see components.css)
+    <section className="section-plain">
+      <div className="page-container">
+        <p className="eyebrow eyebrow--accent">{String(platforms.length).padStart(2, '0')} Platforms</p>
+        <h2 className="display-heading mt-[12px] text-h2 uppercase">Robot Deployments</h2>
       </div>
 
       {/*
@@ -34,6 +35,7 @@ export default function Deployments() {
               key={platform.name}
               className={`grid border-t border-line ${flipped ? 'lg:grid-cols-[41fr_59fr]' : 'lg:grid-cols-[61fr_39fr]'}`}
             >
+              {/* The photo slides in from its own side */}
               <div
                 className={`deployment-photo ${flipped ? 'lg:order-2 lg:border-l' : 'lg:border-r'} ${photo ? '' : 'hidden lg:block'}`}
                 data-aos={flipped ? 'fade-left' : 'fade-right'}
@@ -41,11 +43,7 @@ export default function Deployments() {
                 {photo && <img src={photo.src} alt={photo.alt} className={photo.contain ? 'object-contain' : undefined} />}
               </div>
 
-              <div
-                className={`deployment-panel ${flipped ? 'deployment-panel--left' : ''}`}
-                data-aos="fade-up"
-                data-aos-delay="150"
-              >
+              <div className={`deployment-panel ${flipped ? 'deployment-panel--left' : ''}`}>
                 <div>
                   <p className="eyebrow eyebrow--accent">{platform.label}</p>
                   <h3 className="display-heading mt-[12px] text-h3 leading-[1.2] lg:text-[1.75rem]">{platform.name}</h3>

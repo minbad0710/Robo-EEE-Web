@@ -15,6 +15,14 @@ export default function CompetitionsPage() {
         eyebrow="Global Arenas"
         title="Competing in Prestigious International Robotics Competitions"
         titleClassName="max-w-[1240px]"
+        description={
+          <>
+            We currently compete in two international competitions: the{' '}
+            <strong className="font-[600] text-ink">IEEE ICRA BARN Challenge</strong> for high-speed autonomous
+            navigation, and <strong className="font-[600] text-ink">RoboCup@Home</strong> for domestic service robots.
+          </>
+        }
+        descriptionClassName="max-w-[640px]"
       />
 
       <Track

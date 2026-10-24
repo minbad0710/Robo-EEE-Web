@@ -14,6 +14,18 @@ yarn seed              # load the roster in seed/teamMembers.data.js (see "Seedi
 
 If the MongoDB password contains special characters, URL-encode them in `DATABASE` (`@` becomes `%40`).
 
+## Deploying on Vercel
+
+The API runs on Vercel as its own project, from the same GitHub repo as the website. Vercel detects `server.js` as an Express app; no extra configuration is needed.
+
+1. **MongoDB Atlas → Network Access:** allow access from anywhere (`0.0.0.0/0`). Vercel has no fixed IP address, so Atlas can't allow just Vercel. The database is then protected by its username and password only, so use a long random password.
+2. **Vercel → Add New → Project:** import the repo, set **Root Directory** to `backend` (the Framework Preset shows Express).
+3. **Environment Variables:** the ones in `.env.example`, except `PORT`. `CLIENT_ORIGIN` is the website's address, e.g. `https://<site>.vercel.app` (add a custom domain comma-separated). Changing a variable later needs a redeploy.
+4. Deploy, then open `https://<api>.vercel.app/api/health`. It should show `{"status":"ok","database":"connected"}`.
+5. In the **website's** Vercel project, set `VITE_API_URL` to `https://<api>.vercel.app/api` and redeploy it.
+
+Each push to `main` redeploys both projects.
+
 ## Folders
 
 | Folder | What goes in it |
@@ -57,7 +69,7 @@ curl -X POST http://localhost:5000/api/team-members \
 
 ### Member photos
 
-Photos are stored on Cloudinary (folder `robo-eee/team`). MongoDB only keeps the link (`photo`) and Cloudinary's id for it (`photoPublicId`). To add or replace a photo, send the request as `multipart/form-data` with the image in a `photo` field (JPG, PNG or WebP, up to 5 MB):
+Photos are stored on Cloudinary (folder `robo-eee/team`). MongoDB only keeps the link (`photo`) and Cloudinary's id for it (`photoPublicId`). To add or replace a photo, send the request as `multipart/form-data` with the image in a `photo` field (JPG, PNG or WebP, up to 4 MB, because Vercel rejects requests over 4.5 MB):
 
 ```bash
 curl -X POST http://localhost:5000/api/team-members \

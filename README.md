@@ -17,4 +17,4 @@ cd frontend && yarn install && yarn dev    # site on http://localhost:5173
 ## Deploying
 
 - **Frontend (Vercel):** the project's Root Directory must be `frontend` (Vercel → Settings → Build & Deployment). Set `VITE_API_URL` to the deployed API's URL, e.g. `https://<api-host>/api`.
-- **Backend:** host it on any Node.js host with the variables from `backend/.env.example`, and add the site's URL to `CLIENT_ORIGIN`.
+- **Backend (Vercel):** a second Vercel project from this repo with Root Directory `backend`. See "Deploying on Vercel" in [backend/README.md](backend/README.md).

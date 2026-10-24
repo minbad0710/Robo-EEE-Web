@@ -14,7 +14,8 @@ const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 // Cloudinary. The image itself is never written to disk or MongoDB; only its Cloudinary link is stored.
 const uploadImage = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024, files: 1 }, // 5 MB
+  // 4 MB: Vercel rejects request bodies over 4.5 MB before they reach the API, so stay under that
+  limits: { fileSize: 4 * 1024 * 1024, files: 1 },
   fileFilter: (req, file, cb) => {
     if (IMAGE_TYPES.includes(file.mimetype)) cb(null, true);
     else cb(new HttpError(400, 'Photo must be a JPG, PNG or WebP image'));

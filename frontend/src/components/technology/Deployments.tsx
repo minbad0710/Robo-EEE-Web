@@ -47,6 +47,7 @@ export default function Deployments() {
                 <div>
                   <p className="eyebrow eyebrow--accent">{platform.label}</p>
                   <h3 className="display-heading mt-[12px] text-h3 leading-[1.2] lg:text-[1.75rem]">{platform.name}</h3>
+                  <p className="mt-[16px] max-w-[440px] text-sm leading-relaxed text-body">{platform.description}</p>
                 </div>
                 <ul className="flex flex-col gap-[8px] text-sm text-body">
                   {platform.specs.map((line) => (

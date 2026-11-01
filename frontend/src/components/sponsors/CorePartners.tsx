@@ -19,12 +19,27 @@ export default function CorePartners() {
               data-aos="fade-up"
               data-aos-delay={index * 150}
             >
-              {/* The name is right next to the tile, so the logo needs no alt text of its own */}
-              <div className="partner-mark" aria-hidden="true">
-                {logo ? <img src={logo} alt="" loading="lazy" /> : partner.mark}
-              </div>
+              {/* The logo and the name both link to the partner's website. The logo link is hidden from screen
+                  readers and the keyboard, since the name link right next to it goes to the same place. */}
+              {partner.href ? (
+                <a href={partner.href} target="_blank" rel="noreferrer" className="partner-mark partner-mark--link" aria-hidden="true" tabIndex={-1}>
+                  {logo ? <img src={logo} alt="" loading="lazy" /> : partner.mark}
+                </a>
+              ) : (
+                <div className="partner-mark" aria-hidden="true">
+                  {logo ? <img src={logo} alt="" loading="lazy" /> : partner.mark}
+                </div>
+              )}
               <div className="min-w-0">
-                <h3 className="display-heading max-w-[260px] text-h4 leading-[1.2] sm:max-w-none">{partner.name}</h3>
+                <h3 className="display-heading max-w-[260px] text-h4 leading-[1.2] sm:max-w-none">
+                  {partner.href ? (
+                    <a href={partner.href} target="_blank" rel="noreferrer" className="partner-link">
+                      {partner.name}
+                    </a>
+                  ) : (
+                    partner.name
+                  )}
+                </h3>
                 <p className="mt-[10px] text-xs leading-relaxed text-body">{partner.description}</p>
               </div>
             </article>

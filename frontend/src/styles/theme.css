@@ -9,21 +9,25 @@
   --color-logo-silver: #a8a8a8;
   --color-logo-black: #000000;
 
+  /* The site is dark: near-black pages, slightly lighter cards, light text, cyan accents (like the logo on black) */
+
   /* Brand colours */
-  --color-primary: var(--color-logo-cyan); /* bright accents: footer, glows, focus rings, highlights */
-  --color-primary-dark: #007f86;   /* logo cyan darkened so text on white stays readable (4.8:1) — tagline, active nav, labels */
-  --color-primary-soft: #e6feff;   /* light cyan tint backgrounds */
+  --color-primary: var(--color-logo-cyan); /* bright accents: buttons, glows, focus rings, highlights */
+  --color-primary-dark: #2bd9e1;   /* accent text (tagline, active nav, labels): the logo cyan, a touch softer for reading */
+  --color-primary-soft: #0c2628;   /* dark cyan tint backgrounds (hover, selected year, badges) */
 
   /* Neutrals — true greys like the logo's silver (no blue tint) */
-  --color-ink: #0a0a0a;            /* headings */
-  --color-body: #474747;           /* paragraph text */
-  --color-muted: #6b6b6b;          /* labels, captions */
-  --color-line: #e5e5e5;           /* borders, dividers */
-  --color-line-strong: var(--color-logo-silver); /* borders that need to stand out (Team department tabs) */
-  --color-surface: #ffffff;
-  --color-surface-alt: #f4f4f4;    /* badges */
-  --color-surface-soft: #fafafa;   /* tinted cards */
-  --color-section-alt: #f5f5f5;    /* every other page section, so sections are easy to tell apart */
+  --color-ink: #f5f5f5;            /* headings */
+  --color-body: #c2c2c2;           /* paragraph text */
+  --color-muted: #8f8f8f;          /* labels, captions */
+  --color-line: #2a2a2a;           /* borders, dividers */
+  --color-line-strong: #555555;    /* borders that need to stand out (Team department tabs) */
+  --color-page: #0a0a0a;           /* page background */
+  --color-surface: #1e1e1e;        /* cards, outline buttons, tabs */
+  --color-surface-alt: #2a2a2a;    /* badges, image placeholders */
+  --color-surface-soft: #1a1a1a;   /* tinted cards and panels */
+  --color-section-alt: #161616;    /* every other page section: clearly lighter than the page, with a line on each edge */
+  --color-section-dark: #161616;   /* band behind videos */
   --color-footer: var(--color-logo-black);
   --color-footer-text: #d4d4d4;
   --color-footer-muted: #8c8c8c;

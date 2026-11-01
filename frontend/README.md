@@ -73,7 +73,7 @@ Robo@EEE-web/
     │   ├── about/          # Origin
     │   ├── competitions/   # Track (one competition track), Milestones
     │   ├── technology/     # Deployments, Gallery
-    │   ├── team/           # Advisors, Members (year list + department tabs + member cards)
+    │   ├── team/           # Members (year list + department tabs, advisors included + member cards)
     │   ├── sponsors/       # CorePartners, SponsorWall, PartnerCta
     │   ├── join/           # ApplyCta, Faq
     │   └── news/           # NewsGrid
@@ -113,11 +113,11 @@ Rule of thumb: a component used by **one** page goes in that page's folder; a co
   | `min-[1440px]:` | 1440px (custom) |
 
 - **Use `.page-container`** on every section. It centres content at a max of 1280px with side gutters of 16px (mobile), 32px (≥768px) and 80px (≥1280px), matching the 1440px Figma frame.
-- **Sections alternate white / light grey** (`section-alt`) so each one reads as its own block. This happens automatically for every `<section>` a page puts directly inside `<main>` (the rule is at the top of `components.css`), so:
+- **Sections alternate between the page colour and a slightly lighter band** (`section-alt`) so each one reads as its own block. This happens automatically for every `<section>` a page puts directly inside `<main>` (the rule is at the top of `components.css`), so:
   - give every section its own top **and** bottom padding (e.g. `py-[64px] md:py-[96px]`), not just top padding that relies on the next section;
   - `<main>` has `overflow-x-clip` to trim the grey where it runs past the screen edges. Don't change it to `overflow-hidden`, which breaks the sticky header;
-  - a section that is only sometimes shown flips the colours of the sections after it, so keep it in place while its data loads (see `Advisors.tsx`);
-  - to keep a section white and out of the count, so it reads as part of the section above, give it `className="section-plain"` (Technology's Robot Deployments, which follows straight on from the page title).
+  - a section that is only sometimes shown flips the colours of the sections after it, so keep sections in place even while their data loads;
+  - to keep a section on the page colour and out of the count, so it reads as part of the section above, give it `className="section-plain"` (Technology's Robot Deployments, which follows straight on from the page title).
 - `components.css` is imported into Tailwind's `components` layer, so a Tailwind class on an element always overrides the shared class.
 
 ### How design tokens become Tailwind classes
@@ -131,23 +131,23 @@ Responsive font sizes are set with `@media` blocks at the bottom of `theme.css`.
 
 ### Colours
 
-The palette is taken from the logo: **cyan** artwork with **silver** shading on **black**. All values live in `theme.css`.
+The site is **dark**, taken from the logo: **cyan** artwork with **silver** shading on **black**. All values live in `theme.css`.
 
 | Token | Value | Used for |
 |---|---|---|
-| `logo-cyan` / `primary` | `#00f5ff` | Bright accents: footer hover, glows, focus rings, text selection; cyan text on black buttons |
-| `logo-black` / `footer` | `#000000` | Main buttons (with cyan text), selected Team tab, footer background |
-| `logo-silver` / `line-strong` | `#a8a8a8` | Borders that need to stand out (Team department tabs) |
-| `primary-dark` | `#007f86` | Logo cyan darkened for text on white (4.8:1 contrast): tagline, active nav link, accent labels |
-| `primary-soft` | `#e6feff` | Light cyan tint backgrounds |
+| `logo-cyan` / `primary` | `#00f5ff` | Main buttons (with black text), selected Team tab, glows, focus rings, text selection |
+| `logo-black` / `footer` | `#000000` | Header and footer, letter tiles |
+| `primary-dark` | `#2bd9e1` | Accent text: tagline, active nav link, labels |
+| `primary-soft` | `#0c2628` | Dark cyan tint backgrounds (hover, selected year, badges) |
 | `header`, `header-*` | `#000000` + dark greys | The black header (same black as the logo, so the logo artwork sits straight on it) and its dropdown, search box and mobile menu |
-| `ink` | `#0a0a0a` | Headings |
-| `body` | `#474747` | Paragraph text |
-| `muted` | `#6b6b6b` | Labels, captions |
-| `line` | `#e5e5e5` | Borders, dividers |
-| `section-alt` | `#f5f5f5` | Background of every other page section |
+| `page` | `#0a0a0a` | Page background |
+| `surface`, `surface-soft`, `surface-alt` | `#181818`, `#141414`, `#222222` | Cards and panels, a step lighter than the page |
+| `ink` | `#f5f5f5` | Headings |
+| `body` | `#c2c2c2` | Paragraph text |
+| `muted` | `#8f8f8f` | Labels, captions |
+| `line` / `line-strong` | `#2a2a2a` / `#555555` | Borders, dividers / borders that need to stand out (Team tabs) |
+| `section-alt` | `#121212` | Background of every other page section |
 
-Pure logo cyan is unreadable as text on white, so text accents use `primary-dark`; use `primary`/`logo-cyan` on black or as a highlight only.
 
 ### Fonts
 
@@ -201,7 +201,7 @@ Most page text lives in `src/data/site.ts`:
 - `teamDepartments` — Team page department tabs (Leads, Software, Hardware, …): name + one-line description, in tab order. The people are in the database (see "Team members")
 - `applyUrl`, `faqs` — Join Us page
 - `newsPosts` — News page, newest first (photos: `post-N` by position); optional `href` for Read More (defaults to Instagram)
-- `corePartners` (the "Collaborations" cards; logos: `partner-N` by position, `mark` shows if there's no logo), `sponsors` (logos: `sponsor-N` by position; optional `href` makes the card a link), `sponsorshipEmail` — Sponsors page
+- `corePartners` (the "Collaborations" cards; logos: `partner-N` by position, `mark` shows if there's no logo; optional `href` makes the logo and name links), `sponsors` (logos: `sponsor-N` by position; optional `href` makes the card a link), `sponsorshipEmail` — Sponsors page
 - `barnResults`, `robocupFocus` — results row under each Competitions track (`highlight: true` colours a value teal)
 - `milestones` — Competitions roadmap
 
@@ -211,7 +211,7 @@ To add a new social icon, add an entry to `contactLinks` and draw its SVG in `So
 
 The Team page's advisors and members come from the backend (`GET /api/team-members`, MongoDB), with photos on Cloudinary. They are added and edited through the backend, not in this project: see `../backend/README.md`. The current roster is in `../backend/seed/teamMembers.data.js`.
 
-- Each person has one entry per department per academic year. Department leads have one in `leads` and one in their own department. Advisors use the department `advisors` and appear in the Advisors section, not in a tab.
+- Each person has one entry per department per academic year. Department leads have one in `leads` and one in their own department. Advisors use the department `advisors` and appear in the first tab, "Advisors".
 - The year list is built from the years in the data, newest first, so adding `AY27/28` members adds that year automatically.
 - No photo → default avatar. The GitHub, LinkedIn and website icons only show for the links a person has (`MemberLinks.tsx`).
 - Photos are cropped around the face by Cloudinary (`facePhoto()` in `utils/cloudinary.ts`), so any photo shape works.
@@ -231,7 +231,7 @@ All photos are **demo images** for now. Each page has its own folder in `src/ass
 | `technology/` | `deployment-1.webp` … `deployment-3.webp` | Robot Deployments rows, top to bottom (Jackal, Galaxea R1, In-House) |
 | | `gallery-banner.webp` | Prototype Gallery, wide image |
 | | `gallery-1.webp` … `gallery-3.webp` | Prototype Gallery, small images left to right |
-| `team/` | `default-avatar.svg` | Member and advisor cards without a photo (real photos are on Cloudinary, see "Team members") |
+| `team/` | `default-avatar.webp` | Member and advisor cards without a photo: the team's blank profile template (real photos are on Cloudinary, see "Team members") |
 | `news/` | `post-1.webp` … `post-6.webp` | News cards in reading order, same order as `newsPosts` in `site.ts` |
 | `sponsors/` | `sponsor-1.webp`, `sponsor-2.webp`, … | Sponsor logos in card order, same order as `sponsors` in `site.ts` (real logos, not demo) |
 | | `partner-1.webp`, `partner-2.webp`, … | Collaboration logos (MLDA@EEE, Garage@EEE) in card order, same order as `corePartners` in `site.ts`; shown square, so use square images |

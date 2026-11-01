@@ -17,8 +17,8 @@ export type SearchPage = NavLink & { description: string; keywords: string[] }
 // backend, which is only called on the Team page.
 const pageDetails: Record<string, { description: string; keywords: string[] }> = {
   '/': {
-    description: 'Overview, latest results and robot platforms',
-    keywords: ['home', 'team robo', 'robo@eee', 'ace', 'assemble compete execute', 'latest results', 'announcement', ...benchmarks.map((b) => b.event)],
+    description: 'Overview, achievements and robot platforms',
+    keywords: ['home', 'team robo', 'robo@eee', 'ace', 'assemble compete execute', 'achievements', 'latest results', ...benchmarks.map((b) => b.event)],
   },
   '/about': {
     description: 'Our origin story and mission',
@@ -33,7 +33,7 @@ const pageDetails: Record<string, { description: string; keywords: string[] }> =
     keywords: ['tech', 'robots', 'robot deployments', 'platforms', 'hardware', 'software', 'specs', 'prototype gallery', 'cad', ...platforms.map((p) => p.name), ...platforms.flatMap((p) => p.specs)],
   },
   '/team': {
-    description: 'Advisors and active members',
+    description: 'Active members and advisors',
     keywords: ['our team', 'members', 'people', 'who we are', 'advisors', 'faculty', 'professor', 'student advisors', 'leads', ...teamDepartments.map((d) => d.name)],
   },
   '/sponsors': {

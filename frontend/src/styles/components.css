@@ -27,16 +27,22 @@
 }
 
 /*
- * Page sections alternate white / light grey, so each one reads as its own block. Applies to every
- * <section> that is a direct child of <main> (each page's top-level sections), so new sections join in
- * automatically; each section therefore needs its own top and bottom padding.
- * The border-image paints the grey past the section's own width out to the screen edges (most sections
- * are a .page-container, max 1440px wide); <main>'s overflow-x-clip trims the overhang.
- * A section with .section-plain stays white and is left out of the count, for a section that should read
+ * Page sections alternate between the page colour and a lighter band with a thin line along its top and bottom
+ * edges, so each one reads as its own block. Applies to every <section> that is a direct child of <main> (each
+ * page's top-level sections), so new sections join in automatically; each section therefore needs its own top and
+ * bottom padding.
+ * The border-image paints the band and its lines past the section's own width out to the screen edges (most
+ * sections are a .page-container, max 1440px wide); <main>'s overflow-x-clip trims the overhang.
+ * A section with .section-plain keeps the page colour and is left out of the count, for a section that should read
  * as a continuation of the one above (Technology's Robot Deployments, under the page title).
  */
 main > :nth-child(even of section:not(.section-plain)) {
-  border-image: conic-gradient(var(--color-section-alt) 0 0) fill 0 / / 0 100vw;
+  border-image: linear-gradient(
+      var(--color-line) 0 1px,
+      var(--color-section-alt) 1px calc(100% - 1px),
+      var(--color-line) calc(100% - 1px)
+    )
+    fill 0 / / 0 100vw;
 }
 
 /* Heavy display type (Unbounded) used for all headings */
@@ -418,16 +424,24 @@ main > :nth-child(even of section:not(.section-plain)) {
   outline-offset: 2px;
 }
 
+/* Logo cyan with black text, so it stands out on the dark pages */
 .btn--primary {
-  background: var(--color-logo-black);
-  color: var(--color-logo-cyan);
-  border: 1px solid var(--color-logo-black);
+  background: var(--color-logo-cyan);
+  color: var(--color-logo-black);
+  border: 1px solid var(--color-logo-cyan);
   transition: background-color 0.15s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
 
-/* Matches the logo: cyan on black, with a soft cyan glow on hover */
+/* A soft cyan glow on hover */
 .btn--primary:hover {
   box-shadow: 0 0 0 1px var(--color-logo-cyan), 0 6px 20px -6px var(--color-logo-cyan);
+}
+
+/* Not available yet (e.g. a paper whose PDF isn't uploaded): greyed out, no hover glow */
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .btn--outline {
@@ -583,6 +597,40 @@ main > :nth-child(even of section:not(.section-plain)) {
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.05);
 }
 
+/* About — Assemble / Compete / Execute cards: centred, big letter on a black tile, cyan line along the top */
+.ace-card {
+  position: relative;
+  overflow: hidden;
+  padding: 1.75rem 1.5rem 1.5rem;
+  border: 1px solid var(--color-line);
+  border-radius: 10px;
+  background: var(--color-surface);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.05);
+  text-align: center;
+}
+
+.ace-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--color-primary);
+}
+
+.ace-card__letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  background: var(--color-logo-black);
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--color-logo-cyan);
+}
+
 /* Competitions — photo tiles; the tile sets the size, the photo fills it without stretching */
 .media-tile {
   position: relative;
@@ -614,6 +662,12 @@ main > :nth-child(even of section:not(.section-plain)) {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* A product shot shown whole (`contain` in Deployments.tsx, e.g. Galaxea R1) has a white background, so the tile
+   is white around it too, instead of a white box floating in a dark tile */
+.deployment-photo:has(img.object-contain) {
+  background: #ffffff;
 }
 
 .deployment-panel {
@@ -725,6 +779,27 @@ main > :nth-child(even of section:not(.section-plain)) {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Logo tile and name that link to the partner's website: cyan outline / text on hover */
+.partner-mark--link {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.partner-mark--link:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.partner-link {
+  transition: color 0.15s ease;
+}
+
+.partner-link:hover,
+.partner-link:focus-visible {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 /* Sponsors — sponsor card: logo on top, name underneath */
@@ -956,9 +1031,9 @@ main > :nth-child(even of section:not(.section-plain)) {
 }
 
 .department-tabs__tab[aria-selected='true'] {
-  border-color: var(--color-logo-black);
-  background: var(--color-logo-black);
-  color: var(--color-logo-cyan);
+  border-color: var(--color-logo-cyan);
+  background: var(--color-logo-cyan);
+  color: var(--color-logo-black);
   box-shadow: 0 6px 16px -8px rgb(0 0 0 / 0.5);
 }
 
@@ -969,9 +1044,20 @@ main > :nth-child(even of section:not(.section-plain)) {
     mask-image: none;
   }
 
+  /* Seven tabs are only ~120px wide here, so the text shrinks a little until 1440px to keep long words like
+     "Development" inside their tab */
   .department-tabs__tab {
     flex: 1 1 0;
     min-width: 0;
+    padding-inline: 0.25rem;
+    font-size: var(--fs-xs);
+  }
+}
+
+@media (min-width: 1440px) {
+  .department-tabs__tab {
+    padding-inline: 0.5rem;
+    font-size: var(--fs-sm);
   }
 }
 
@@ -1080,6 +1166,33 @@ main > :nth-child(even of section:not(.section-plain)) {
 
 .back-link:hover {
   color: var(--color-primary-dark);
+}
+
+/* A full-width near-black band, a step lighter than the black footer so the two stay apart, painted to the
+   screen edges like the grey section bands. Pair it with .section-plain so it isn't counted in the white/grey
+   alternation. */
+.section-dark {
+  border-image: conic-gradient(var(--color-section-dark) 0 0) fill 0 / / 0 100vw;
+}
+
+/* Competition event page — embedded YouTube video, 16:9 at any width */
+.video-frame {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--color-logo-black);
+  box-shadow: 0 20px 50px -20px rgb(0 245 255 / 0.25);
+}
+
+.video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 .coming-soon-badge {

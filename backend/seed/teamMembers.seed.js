@@ -56,10 +56,11 @@ const seed = async () => {
   if (existingCount > 0 && !process.argv.includes('--reset')) {
     throw new Error(`${YEAR} already has ${existingCount} members. Run "yarn seed --reset" to replace them.`);
   }
-  if (existingCount > 0) await deleteYear();
-
+  // Upload first, then swap the old members for the new ones in one go, so the live Team page is only empty for
+  // a moment, not for the whole upload
   console.log('Uploading photos to Cloudinary...');
   const photos = await uploadPhotos();
+  if (existingCount > 0) await deleteYear();
 
   const docs = Object.entries(departments).flatMap(([department, rows]) =>
     rows.map(([name, role]) => {

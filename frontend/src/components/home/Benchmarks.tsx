@@ -3,7 +3,7 @@ import { benchmarks } from '../../data/site'
 export default function Benchmarks() {
   return (
     <section className="page-container py-[64px] md:py-[88px]">
-      <h2 className="eyebrow font-medium text-ink">Latest Results</h2>
+      <h2 className="eyebrow font-medium text-ink">Achievements</h2>
 
       <div className="mt-[48px] grid md:grid-cols-3">
         {benchmarks.map((item, index) => (

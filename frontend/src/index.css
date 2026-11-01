@@ -39,6 +39,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    color-scheme: dark; /* dark scrollbars and form controls */
   }
 
   ::selection {
@@ -48,7 +49,7 @@
 
   body {
     margin: 0;
-    background: var(--color-surface);
+    background: var(--color-page);
     color: var(--color-body);
     font-family: var(--font-body);
     font-size: var(--fs-base);

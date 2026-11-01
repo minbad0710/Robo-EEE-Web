@@ -1,5 +1,5 @@
 import heroImage from '../../assets/home/hero.webp'
-import Announcement from './Announcement'
+// import Announcement from './Announcement'
 
 export default function Hero() {
   return (
@@ -16,8 +16,9 @@ export default function Hero() {
         <p className="mt-[20px] font-display text-tagline font-bold text-primary-dark">Assemble • Compete • Execute (ACE)</p>
 
         <p className="mt-[24px] max-w-[640px] text-lead leading-relaxed text-body">
-          Pioneering autonomous mobile manipulation, high-speed navigation, and service robotics.
-          Empowering Nanyang Technological University undergraduates to dominate prestigious global stages.
+          Team Robo@EEE is a student-led robotics team at NTU’s School of Electrical and Electronic Engineering. We
+          build autonomous robots for navigation and everyday assistance, competing in the ICRA BARN Challenge and
+          preparing for RoboCup@Home 2027.
         </p>
 
         <div className="mt-[32px] flex flex-wrap gap-[8px]">
@@ -34,10 +35,11 @@ export default function Hero() {
         <img src={heroImage} alt="Team Robo members posing together in the lab" />
       </div>
 
-      {/* Full width under the text and photo */}
+      {/* Announcement hidden for now. To show it again, uncomment this block and the import at the top.
       <div className="lg:col-span-2">
         <Announcement />
       </div>
+      */}
     </section>
   )
 }

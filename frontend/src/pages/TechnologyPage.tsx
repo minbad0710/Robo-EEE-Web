@@ -8,7 +8,8 @@ export default function TechnologyPage() {
       <PageHero
         eyebrow="The Engineering Pipeline"
         title="Robust Hardware, Intelligent Software"
-        description="Purpose-built systems for autonomous navigation and domestic service robotics."
+        description="Our platforms support autonomous navigation and domestic service robotics. We integrate perception, planning, control and interaction systems, progressing from simulation to full-robot testing."
+        descriptionClassName="max-w-[640px]"
         titleClassName="max-w-[780px]"
       />
       <Deployments />

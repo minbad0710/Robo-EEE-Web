@@ -3,12 +3,28 @@ export type NavLink = { label: string; href: string; children?: NavLink[] }
 
 // One page per competition, listed in the header's "Competitions" dropdown (newest first).
 // `comingSoon` shows a placeholder page until the page is written.
-export type CompetitionEvent = { name: string; href: string; comingSoon?: boolean }
+// `paper` adds a Team Description Paper download button: `label`, and `url` = the PDF, e.g. put it in
+// frontend/public/papers/ and set url: '/papers/robocup-home-2027-tdp.pdf'. Leave `url` empty until the PDF exists
+// (the button shows, disabled, as "PDF coming soon").
+// `videoUrl` embeds a YouTube video: the "embed" link from YouTube's Share → Embed (https://www.youtube.com/embed/…).
+export type CompetitionEvent = {
+  name: string
+  href: string
+  comingSoon?: boolean
+  paper?: { label: string; url?: string }
+  videoUrl?: string
+}
 
 export const competitionEvents: CompetitionEvent[] = [
   { name: 'ICRA BARN 2026', href: '/competitions/icra-barn-2026', comingSoon: true },
   { name: 'ICRA BARN 2027', href: '/competitions/icra-barn-2027', comingSoon: true },
-  { name: 'RoboCup@Home 2027', href: '/competitions/robocup-home-2027', comingSoon: true },
+  {
+    name: 'RoboCup@Home 2027',
+    href: '/competitions/robocup-home-2027',
+    paper: { label: 'Team Description Paper 2027' },
+    // Placeholder until the qualification video is up
+    videoUrl: 'https://www.youtube.com/embed/zJ1PYqVOYVA?si=Nnz5w4l-EHkUUOnt',
+  },
 ]
 
 export const navLinks: NavLink[] = [
@@ -50,7 +66,7 @@ export const benchmarks: Benchmark[] = [
   { medal: '🥇', result: '1st Place (Sim)', event: 'BARN 2026', team: 'as Team Robo' },
 ]
 
-// `label` and `specs` (one line per entry) are shown on the Technology page
+// `description` is shown on the Home page cards and the Technology page; `label` and `specs` (one line per entry) on the Technology page
 export type Platform = { track: string; name: string; description: string; label: string; specs: string[] }
 
 export const platforms: Platform[] = [
@@ -58,7 +74,7 @@ export const platforms: Platform[] = [
     track: 'BARN Challenge',
     name: 'Clearpath Jackal',
     description:
-      'A robust, standardized system leveraged for complex, high-speed collision-free obstacle navigation benchmarks in dense simulated and physical woods.',
+      'Our platform for BARN navigation development, supporting obstacle perception, path planning and motion-control testing in constrained environments.',
     label: 'BARN Challenge Platform',
     specs: ['Jetson AGX Orin · High-torque 4WD', 'Velodyne VLP-16 · RealSense D435'],
   },
@@ -66,7 +82,7 @@ export const platforms: Platform[] = [
     track: 'RoboCup',
     name: 'Galaxea R1',
     description:
-      'Acquired via collaboration with Prof. Ziwei Wang. Provides a reliable baseline platform with advanced perception and assistive manipulators.',
+      'A dual-arm mobile robot used as a baseline for integrating perception, manipulation, navigation and human–robot interaction for RoboCup@Home.',
     label: 'RoboCup@Home Baseline',
     specs: ['Galaxea Custom SDK · Holonomic Base', 'Stereo Depth · 6-DoF Assistive Arm'],
   },
@@ -74,7 +90,7 @@ export const platforms: Platform[] = [
     track: 'RoboCup',
     name: 'In-House Built Robot',
     description:
-      'Meticulously designed and assembled by students to maximize agility, payload adaptability, and custom modular perception layouts.',
+      'An in-house mobile manipulator being developed for RoboCup@Home, with a modular design supporting integration, maintenance and iterative testing.',
     label: 'RoboCup@Home Custom',
     specs: ['Dual Jetson AGX Orin · Mecanum Drive', '3D Lidar · Custom 7-DoF Manipulator'],
   },
@@ -126,11 +142,12 @@ export const milestones: Milestone[] = [
   },
 ]
 
-// Team page — Active Members. Department tabs across the top, in this order. The people themselves (advisors
-// included) come from the backend: see data/teamMembers.ts.
+// Team page — Active Members. Department tabs across the top, in this order (advisors first). The people
+// themselves come from the backend: see data/teamMembers.ts.
 export type TeamDepartment = { id: string; name: string; description: string }
 
 export const teamDepartments: TeamDepartment[] = [
+  { id: 'advisors', name: 'Advisors', description: 'Faculty and student advisors guiding the team with research expertise and experience.' },
   { id: 'leads', name: 'Leads', description: "Steering the team's vision, strategy and coordination across every department." },
   { id: 'software', name: 'Software', description: 'Building the perception, navigation and manipulation stack that makes our robots autonomous.' },
   { id: 'hardware', name: 'Hardware', description: 'Designing and building the mechanical and embedded systems inside every robot.' },
@@ -140,19 +157,22 @@ export const teamDepartments: TeamDepartment[] = [
 ]
 
 // Sponsors page, "Collaborations". Logos come from src/assets/sponsors/ by position (partner-1 = first card, …);
-// `mark` is the short wordmark shown in the logo tile when a partner has no logo file
-export type CorePartner = { name: string; mark: string; description: string }
+// `mark` is the short wordmark shown in the logo tile when a partner has no logo file; `href` makes the logo and
+// name links to the partner's website
+export type CorePartner = { name: string; mark: string; description: string; href?: string }
 
 export const corePartners: CorePartner[] = [
   {
     name: 'MLDA@EEE Initiative',
     mark: 'MLDA',
+    href: 'https://www.ntu.edu.sg/eee/student-life/mlda',
     description:
       'Our originating student division. Generously provided the initial Jackal robotic baseline systems and computational structures before rebranding under direct institutional backing.',
   },
   {
     name: 'Garage@EEE Advancement Route',
     mark: 'GARAGE',
+    href: 'https://www.garage-eee.com/',
     description:
       'The dedicated workshop space and experimental proving grounds where robotic hardware models undergo robust validation tests, low-level integration, and payload modifications.',
   },
@@ -163,8 +183,8 @@ export const corePartners: CorePartner[] = [
 export type Sponsor = { name: string; href?: string }
 
 export const sponsors: Sponsor[] = [
-  { name: 'NTU School of Electrical and Electronic Engineering' },
-  { name: 'NTU College of Engineering' },
+  { name: 'NTU School of Electrical and Electronic Engineering', href: 'https://www.ntu.edu.sg/eee' },
+  { name: 'NTU College of Engineering', href: 'https://www.ntu.edu.sg/engineering' },
 ]
 
 export const sponsorshipEmail = 'teamrobontu@gmail.com'

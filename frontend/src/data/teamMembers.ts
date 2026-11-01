@@ -7,7 +7,7 @@ import { getJson } from '../utils/api'
 export type TeamMember = {
   _id: string
   year: string // academic year, e.g. 'AY26/27'
-  department: string // `id` from teamDepartments in site.ts, or 'advisors' for the Advisors section
+  department: string // `id` from teamDepartments in site.ts (advisors included)
   name: string
   role: string
   photo?: string // Cloudinary image URL — default avatar if empty

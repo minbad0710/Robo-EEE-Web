@@ -1,3 +1,4 @@
+import Ace from '../components/about/Ace'
 import Origin from '../components/about/Origin'
 import PageHero from '../components/PageHero'
 
@@ -10,6 +11,7 @@ export default function AboutPage() {
         description="An elite division of student developers at Nanyang Technological University, pushing the boundaries of spatial artificial intelligence."
       />
       <Origin />
+      <Ace />
     </>
   )
 }

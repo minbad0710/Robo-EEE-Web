@@ -4,7 +4,7 @@ import SocialIcon from './SocialIcon'
 
 export default function Footer() {
   return (
-    <footer className="bg-footer text-footer-text">
+    <footer className="border-t border-line bg-footer text-footer-text">
       <div className="page-container pt-[40px] pb-[32px]">
         {/* Top row — page links + social icons (centred & stacked below lg, split left/right from lg) */}
         <div className="flex flex-col items-center gap-[32px] lg:flex-row lg:justify-between">

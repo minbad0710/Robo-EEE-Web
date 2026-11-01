@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 // Department ids: the tabs on the Team page, in order (teamDepartments in frontend/src/data/site.ts),
-// plus 'advisors' for the Advisors section above them
-const DEPARTMENTS = ['leads', 'software', 'hardware', 'business', 'finance', 'branding', 'advisors'];
+// starting with advisors
+const DEPARTMENTS = ['advisors', 'leads', 'software', 'hardware', 'business', 'finance', 'branding'];
 
 const url = [/^https?:\/\//, '{PATH} must start with http:// or https://'];
 

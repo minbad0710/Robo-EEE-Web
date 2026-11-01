@@ -1,5 +1,5 @@
 import { useRef, useState, type KeyboardEvent } from 'react'
-import defaultAvatar from '../../assets/team/default-avatar.svg'
+import defaultAvatar from '../../assets/team/default-avatar.webp'
 import { teamDepartments } from '../../data/site'
 import type { TeamMember, TeamMembersState } from '../../data/teamMembers'
 import { facePhoto } from '../../utils/cloudinary'

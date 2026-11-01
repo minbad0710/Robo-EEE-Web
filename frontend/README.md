@@ -58,7 +58,7 @@ Robo@EEE-web/
     ├── utils/
     │   ├── assets.ts       # byFileName() — look up a glob-imported image by its file name
     │   ├── api.ts          # getJson() — GET request to the backend API
-    │   └── cloudinary.ts   # facePhoto() — face-centred crop of a Cloudinary photo
+    │   └── cloudinary.ts   # getOptimizedImageUrl() / getOptimizedImageSrcSet() — Cloudinary delivery settings
     ├── pages/              # One file per route; each just stacks that page's sections
     │   ├── HomePage.tsx · AboutPage.tsx · CompetitionsPage.tsx · TechnologyPage.tsx
     │   ├── TeamPage.tsx · SponsorsPage.tsx · JoinPage.tsx · NewsPage.tsx
@@ -214,7 +214,7 @@ The Team page's advisors and members come from the backend (`GET /api/team-membe
 - Each person has one entry per department per academic year. Department leads have one in `leads` and one in their own department. Advisors use the department `advisors` and appear in the first tab, "Advisors".
 - The year list is built from the years in the data, newest first, so adding `AY27/28` members adds that year automatically.
 - No photo → default avatar. The GitHub, LinkedIn and website icons only show for the links a person has (`MemberLinks.tsx`).
-- Photos are cropped around the face by Cloudinary (`facePhoto()` in `utils/cloudinary.ts`), so any photo shape works.
+- Photos are cropped around the face and sized per screen by Cloudinary (`getOptimizedImageUrl()` in `utils/cloudinary.ts`), so any photo shape works.
 - The API address is `http://localhost:5000/api` in development. **For the deployed site, set `VITE_API_URL`** (e.g. in Vercel → Settings → Environment Variables) to the deployed backend's URL. Without it, the deployed Team page shows "The member list couldn't be loaded". The backend's `CLIENT_ORIGIN` must also include the site's URL.
 
 ## Images

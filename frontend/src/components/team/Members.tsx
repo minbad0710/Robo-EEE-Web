@@ -2,12 +2,16 @@ import { useRef, useState, type KeyboardEvent } from 'react'
 import defaultAvatar from '../../assets/team/default-avatar.webp'
 import { teamDepartments } from '../../data/site'
 import type { TeamMember, TeamMembersState } from '../../data/teamMembers'
-import { facePhoto } from '../../utils/cloudinary'
+import { getOptimizedImageSrcSet, getOptimizedImageUrl, type ImageCrop } from '../../utils/cloudinary'
 import MemberLinks from './MemberLinks'
 
-// The Cloudinary photo cropped to the card's 4:5 frame (480px wide covers the 240px card on high-density
-// screens), or the default avatar when no photo is set yet
-const photoOf = (member: TeamMember) => (member.photo ? facePhoto(member.photo, 480, '4:5') : defaultAvatar)
+// Card photos are cropped to the card's 4:5 frame around the face, so full-body and landscape photos match the
+// headshots. The frame is at most 240 CSS px wide, so the browser picks 240 / 480 / 720px for 1x / 2x / 3x screens.
+const PHOTO_CROP: ImageCrop = { mode: 'thumb', gravity: 'face', aspectRatio: '4:5', zoom: 0.6 }
+const PHOTO_WIDTHS = [240, 480, 720]
+
+// The Cloudinary photo (480px for browsers that ignore srcset), or the default avatar when no photo is set yet
+const photoOf = (member: TeamMember) => (member.photo ? getOptimizedImageUrl(member.photo, { width: 480, crop: PHOTO_CROP }) : defaultAvatar)
 
 export default function Members({ team }: { team: TeamMembersState }) {
   const members = team.status === 'ready' ? team.members : []
@@ -91,7 +95,16 @@ export default function Members({ team }: { team: TeamMembersState }) {
                   {people.map((person) => (
                     <li key={person._id} className="member-card">
                       <div className="member-card__photo">
-                        <img src={photoOf(person)} alt={person.photo ? person.name : ''} loading="lazy" />
+                        <img
+                          src={photoOf(person)}
+                          srcSet={getOptimizedImageSrcSet(person.photo, PHOTO_WIDTHS, { crop: PHOTO_CROP })}
+                          sizes="240px"
+                          width={240}
+                          height={300}
+                          alt={person.photo ? person.name : ''}
+                          loading="lazy"
+                          decoding="async"
+                        />
                       </div>
                       <h4 className="display-heading mt-[20px] text-h4">{person.name}</h4>
                       <p className="mt-[6px] text-sm font-[500] text-primary-dark">{person.role}</p>
